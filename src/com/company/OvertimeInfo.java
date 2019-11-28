@@ -1,9 +1,9 @@
 package com.company;
 
-public class CustomPair {
+public class OvertimeInfo {
     public int numRounds;
     public int dmgPerRound;
-    public CustomPair(int rounds, int damage){
+    public OvertimeInfo(int rounds, int damage){
         numRounds = rounds;
         dmgPerRound = damage;
     }

@@ -1,7 +1,5 @@
 package heroes;
 
-import java.util.Map;
-
 public class Pyromancer extends Hero {
     Pyromancer(int x, int y) {
         super(x, y);
@@ -14,12 +12,16 @@ public class Pyromancer extends Hero {
     public void attack(Hero hero, char[][] map) {
         int damageFireblast = 350 + 50 * level;
         int damageIgnite = 150 + 20 * level;
+        // order of modifiers: LAND, RACE
+        if(map[this.x][this.y] == 'V'){
+            damageFireblast = Math.round(damageFireblast * 1.25f);
+            damageIgnite = Math.round(damageIgnite * 1.25f);
+        }
+        damageWoRaceModif = damageFireblast + damageIgnite;
+
         if (Rogue.class.equals(hero.getClass())) {
-            //fireblast
             damageFireblast = Math.round(0.8f * damageFireblast);
-            //ignite
             damageIgnite = Math.round(damageIgnite * 0.8f);
-            //ignite overtime
             hero.otDmg.dmgPerRound = Math.round((50 + 30 * level) * 0.8f);
         }
         if (Knight.class.equals(hero.getClass())) {
@@ -37,17 +39,14 @@ public class Pyromancer extends Hero {
             damageIgnite = Math.round(damageIgnite * 1.05f);
             hero.otDmg.dmgPerRound = Math.round((50 + 30 * level) * 1.05f);
         }
-        if(map[this.x][this.y] == 'V'){
-            damageFireblast = Math.round(damageFireblast * 1.25f);
-            damageIgnite = Math.round(damageIgnite * 1.25f);
-        }
-        hero.hp = hero.hp - damageFireblast - damageIgnite;
-        if(hero.hp < 0){
+
+        if(hero.hp < damageFireblast + damageIgnite){
             hero.hp = 0;
+        }else {
+            hero.hp = hero.hp - damageFireblast - damageIgnite;
         }
         hero.wasAttackedThisRound = true;
         hero.otDmg.numRounds = 2;
-
     }
 
 }
