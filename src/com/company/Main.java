@@ -28,6 +28,7 @@ public class Main {
                 if(opponent >= 0){
                     if(!readGameData.heroes.get(j).getClass().equals(Wizard.class)){
                         readGameData.heroes.get(j).attack(readGameData.heroes.get(opponent), readGameData.map.landMap);
+                        readGameData.heroes.get(j).checkIfOpponentKilled(readGameData.heroes.get(opponent));
                     } else {
                         wizards.add(new WizardOpponentPair(heroes.get(j), heroes.get(opponent)));
                     }
@@ -35,12 +36,16 @@ public class Main {
             }
             for (int j = 0; j < wizards.size(); j++){
                 wizards.get(j).wizard.attack(wizards.get(j).opponent, readGameData.map.landMap);
+                wizards.get(j).wizard.checkIfOpponentKilled(wizards.get(j).opponent);
             }
+
 
             for(int j = 0; j < readGameData.heroes.size(); j++){
                 readGameData.heroes.get(j).wasAttackedThisRound = false;
+                readGameData.heroes.get(j).tryLevelUp();
             }
             wizards.clear();
+
         }
         for(int j = 0; j < heroes.size(); j++){
             System.out.println(heroes.get(j).name + " " + heroes.get(j).level + " "

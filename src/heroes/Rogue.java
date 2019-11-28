@@ -17,27 +17,26 @@ public class Rogue extends Hero {
         int backstabDamage = 200 + 20 * level;
         int paralysisDamage = 40 + 10 * level;
         // order of bonuses: CRITICAL, LAND, RACE
+        if(map[this.x][this.y] == 'W') {
+            if (previousLand != 'W') {
+                backstabDamage = Math.round(backstabDamage * 1.5f);
+                streak++;
+            } else if (streak < 3) {
+                streak++;
+            } else if (streak == 3) {
+                backstabDamage = Math.round(backstabDamage * 1.5f);
+                streak = 0;
+            }
+        }
 
-        if(previousLand != 'W' && map[this.x][this.y] == 'W'){
-            //first round in woods -> critical
-            backstabDamage = Math.round(backstabDamage * 1.5f);
-            streak++;
-        }
-        if(streak < 3 && map[this.x][this.y] == 'W'){
-            // streak is not lost while remaining in woods
-            streak++;
-        }
-        if(streak == 3 && map[this.x][this.y] == 'W'){
-            // at 3 hits -> critical, then streak is reset
-            backstabDamage = Math.round(backstabDamage * 1.5f);
-            streak = 0;
-        }
         if(map[this.x][this.y] != 'W'){
             // when not in woods streak stays 0
             streak = 0;
            hero.paralysed = 3;
         } else {
            hero.paralysed = 6;
+           backstabDamage = Math.round(backstabDamage * 1.15f);
+           paralysisDamage = Math.round(paralysisDamage * 1.15f);
         }
 
         damageWoRaceModif = backstabDamage + paralysisDamage;
@@ -59,6 +58,7 @@ public class Rogue extends Hero {
             backstabDamage = Math.round(backstabDamage * 1.25f);
             paralysisDamage = Math.round(paralysisDamage * 1.25f);
         }
+        
         // modify opponent hp
         if(hero.hp < backstabDamage + paralysisDamage){
             hero.hp = 0;

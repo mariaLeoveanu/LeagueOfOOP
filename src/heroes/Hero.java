@@ -58,9 +58,6 @@ public abstract class Hero {
         }
     }
     public int checkForOpponents(ArrayList<Hero> allPlayers, int playerID){
-        if(this.hp == 0 && this.wasAttackedThisRound){
-            return -1;
-        }
         for(int i = 0; i < allPlayers.size(); i++){
             if(i != playerID &&
                this.x == allPlayers.get(i).x &&
@@ -70,6 +67,20 @@ public abstract class Hero {
             }
         }
         return  -1;
+    }
+    public void checkIfOpponentKilled(Hero hero){
+        if (hero.hp == 0){
+            this.xp += Math.max(0, 200 - (this.level - hero.level) * 40);
+        }
+    }
+    public void tryLevelUp(){
+        int minXPRequired = 250 + this.level * 50;
+        if(this.xp < 250){
+            this.level = 0;
+        } else {
+            level = (this.xp - 250)/50 + 1;
+        }
+
     }
     public abstract void attack(Hero hero, char[][] map);
 
