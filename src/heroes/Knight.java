@@ -7,6 +7,7 @@ public class Knight extends Hero {
         super(x, y);
         hp = 900;
         maxHP = 900;
+        name = 'K';
     }
 
     @Override
@@ -38,11 +39,13 @@ public class Knight extends Hero {
                 hero.otDmg.dmgPerRound = 0;
                 if(map[this.x][this.y] == 'L') {
                     executeDamage = Math.round(executeDamage * 1.15f);
-                    System.out.println(executeDamage);
                     slamDamage = Math.round(slamDamage * 1.15f);
-                    System.out.println(slamDamage);
                 }
                 hero.hp = hero.hp - executeDamage - slamDamage;
+                hero.wasAttackedThisRound = true;
+                if (hero.hp < 0){
+                    hero.hp = 0;
+                }
             }
     }
 }

@@ -5,6 +5,7 @@ public class Wizard extends Hero {
         super(x, y);
         hp = 400;
         maxHP = 400;
+        name = 'W';
     }
 
     @Override

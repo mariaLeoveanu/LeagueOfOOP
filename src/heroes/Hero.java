@@ -3,7 +3,6 @@ package heroes;
 import com.company.CustomPair;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public abstract class Hero {
     public int x;
@@ -12,26 +11,31 @@ public abstract class Hero {
     public int hp;
     public int maxHP;
     public int damageWoRaceModif;
-    int level;
+    public int level;
     boolean canMove;
+    public int paralysed;
+    public boolean wasAttackedThisRound;
+    public char name;
     CustomPair otDmg;
     Hero(int x, int y){
+        paralysed = 0;
         this.x = x;
         this.y = y;
         xp = 0;
         level = 0;
+        wasAttackedThisRound = false;
         canMove = true;
         damageWoRaceModif = 0;
         otDmg = new CustomPair(0,0);
     }
     public void checkOtDmg(){
-        if(otDmg.numRounds > 0){
+        if( this.hp > 0 && otDmg.numRounds > 0){
             this.hp -= otDmg.dmgPerRound;
             otDmg.numRounds --;
         }
     }
     public void move(char c){
-        if(canMove && hp > 0){
+        if(canMove && this.hp > 0 && paralysed == 0){
             switch (c){
                 case 'U':
                     this.x--;
@@ -50,6 +54,7 @@ public abstract class Hero {
             }
         } else {
             canMove = true;
+            paralysed--;
         }
     }
     public int checkForOpponents(ArrayList<Hero> allPlayers, int playerID){
@@ -57,7 +62,7 @@ public abstract class Hero {
             if(i != playerID &&
                this.x == allPlayers.get(i).x &&
                this.y == allPlayers.get(i).y &&
-               allPlayers.get(i).hp > 0){
+               allPlayers.get(i).hp > 0 && !allPlayers.get(i).wasAttackedThisRound){
                 return i;
             }
         }

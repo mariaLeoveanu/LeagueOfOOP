@@ -7,6 +7,7 @@ public class Pyromancer extends Hero {
         super(x, y);
         hp = 500;
         maxHP = 500;
+        name = 'P';
     }
 
     @Override
@@ -41,6 +42,10 @@ public class Pyromancer extends Hero {
             damageIgnite = Math.round(damageIgnite * 1.25f);
         }
         hero.hp = hero.hp - damageFireblast - damageIgnite;
+        if(hero.hp < 0){
+            hero.hp = 0;
+        }
+        hero.wasAttackedThisRound = true;
         hero.otDmg.numRounds = 2;
 
     }
