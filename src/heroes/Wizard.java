@@ -5,6 +5,7 @@ public class Wizard extends Hero {
         super(x, y);
         hp = 400;
         maxHP = 400;
+        healthPerLevel = 30;
         name = 'W';
     }
 
@@ -12,9 +13,8 @@ public class Wizard extends Hero {
     public void attack(Hero hero, char[][] map) {
         float drainPc = 0.2f + 0.05f * level;
         float deflectPc = 0.35f + 0.02f * level;
-        int drainDamage;
+        int drainDamage = 1;
         int deflectDamage = 0;
-
         if (Rogue.class.equals(hero.getClass())) {
             drainPc = drainPc * 0.8f;
             deflectDamage = Math.round(Math.round(deflectPc * hero.damageWoRaceModif) * 1.2f);
@@ -31,15 +31,14 @@ public class Wizard extends Hero {
             drainPc = drainPc * 1.05f;
             deflectDamage = 0;
         }
-        drainDamage = Math.round(drainPc * Math.min(0.3f * hero.maxHP, hero.hp));
         if(map[this.x][this.y] == 'D'){
-            drainDamage = Math.round(drainDamage * 1.1f);
+            drainPc = drainPc * 1.1f;
             deflectDamage = Math.round(deflectDamage * 1.1f);
         }
+        drainDamage = Math.round(drainPc * Math.min(0.3f * hero.maxHP, hero.hp));
         if(hero.hp < deflectDamage + drainDamage){
             hero.hp = 0;
         }else{
-
             hero.hp = hero.hp - deflectDamage - drainDamage;
         }
 

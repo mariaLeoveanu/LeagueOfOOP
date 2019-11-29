@@ -8,6 +8,7 @@ public class Rogue extends Hero {
         hp = 600;
         maxHP = 600;
         streak = 0;
+        healthPerLevel = 40;
         name = 'R';
         previousLand = 'D';
     }

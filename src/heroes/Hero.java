@@ -17,6 +17,7 @@ public abstract class Hero {
     public boolean wasAttackedThisRound;
     public char name;
     OvertimeInfo otDmg;
+    int healthPerLevel;
     Hero(int x, int y){
         paralysed = 0;
         this.x = x;
@@ -81,12 +82,16 @@ public abstract class Hero {
     }
     public void tryLevelUp(){
         int minXPRequired = 250 + this.level * 50;
+        int previousLevel = this.level;
         if(this.xp < 250){
             this.level = 0;
         } else {
-            level = (this.xp - 250)/50 + 1;
+            this.level = (this.xp - 250)/50 + 1;
+            if(this.level != previousLevel){
+                this.maxHP = this.maxHP + this.level * this.healthPerLevel;
+                this.hp = this.maxHP;
+            }
         }
-
     }
     public abstract void attack(Hero hero, char[][] map);
 

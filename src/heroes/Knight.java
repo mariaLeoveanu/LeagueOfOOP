@@ -7,6 +7,7 @@ public class Knight extends Hero {
         hp = 900;
         maxHP = 900;
         name = 'K';
+        healthPerLevel = 80;
     }
 
     @Override

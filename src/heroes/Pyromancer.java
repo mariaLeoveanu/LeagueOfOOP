@@ -6,6 +6,7 @@ public class Pyromancer extends Hero {
         hp = 500;
         maxHP = 500;
         name = 'P';
+        healthPerLevel = 50;
     }
 
     @Override
