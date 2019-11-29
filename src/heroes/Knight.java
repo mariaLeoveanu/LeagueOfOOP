@@ -44,19 +44,17 @@ public class Knight extends Hero {
                 slamDamage = Math.round(slamDamage * 1.05f);
             }
 
-            hero.canMove = false;
+            hero.paralysed = 1;
             // reset any overtime damage that was before
             hero.otDmg.numRounds = 0;
             hero.otDmg.dmgPerRound = 0;
-
             if(hero.hp < executeDamage + slamDamage){
                 hero.hp = 0;
             }else {
                 hero.hp = hero.hp - executeDamage - slamDamage;
             }
 
-            hero.wasAttackedThisRound = true;
-
         }
+        hero.wasAttackedThisRound = true;
     }
 }

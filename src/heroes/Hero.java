@@ -12,7 +12,6 @@ public abstract class Hero {
     public int maxHP;
     public int damageWoRaceModif;
     public int level;
-    boolean canMove;
     public int paralysed;
     public boolean wasAttackedThisRound;
     public char name;
@@ -25,12 +24,11 @@ public abstract class Hero {
         xp = 0;
         level = 0;
         wasAttackedThisRound = false;
-        canMove = true;
         damageWoRaceModif = 0;
         otDmg = new OvertimeInfo(0,0);
     }
     public void checkOtDmg(){
-        if( this.hp > 0 && otDmg.numRounds > 0){
+        if(this.hp > 0 && otDmg.numRounds > 0){
             this.hp -= otDmg.dmgPerRound;
             otDmg.numRounds --;
             if(this.hp < 0){
@@ -39,7 +37,7 @@ public abstract class Hero {
         }
     }
     public void move(char c){
-        if(canMove && this.hp > 0 && paralysed <= 0){
+        if(this.hp > 0 && paralysed <= 0 ){
             switch (c){
                 case 'U':
                     this.x--;
@@ -57,7 +55,6 @@ public abstract class Hero {
                     break;
             }
         } else {
-            canMove = true;
             paralysed--;
         }
     }
@@ -81,6 +78,9 @@ public abstract class Hero {
         }
     }
     public void tryLevelUp(){
+        if(this.hp <= 0){
+            return;
+        }
         int previousLevel = this.level;
         if(this.xp < 250){
             this.level = 0;

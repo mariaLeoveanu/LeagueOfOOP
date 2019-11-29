@@ -44,6 +44,7 @@ public class Pyromancer extends Hero {
             damageIgnite = Math.round(fDamageIgnite * 1.05f);
             dmgPerRound = Math.round(dmgPerRound * 1.05f);
         }
+
         hero.otDmg.numRounds = 2;
         hero.otDmg.dmgPerRound = dmgPerRound;
         if(hero.hp < damageFireblast + damageIgnite){

@@ -36,6 +36,7 @@ public class Wizard extends Hero {
             deflectDamage = Math.round(deflectDamage * 1.1f);
         }
         drainDamage = Math.round(drainPc * Math.min(0.3f * hero.maxHP, hero.hp));
+
         if(hero.hp < deflectDamage + drainDamage){
             hero.hp = 0;
         }else{
