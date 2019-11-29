@@ -16,7 +16,7 @@ public abstract class Hero {
     public int paralysed;
     public boolean wasAttackedThisRound;
     public char name;
-    OvertimeInfo otDmg;
+    public OvertimeInfo otDmg;
     int healthPerLevel;
     Hero(int x, int y){
         paralysed = 0;
@@ -39,7 +39,7 @@ public abstract class Hero {
         }
     }
     public void move(char c){
-        if(canMove && this.hp > 0 && paralysed == 0){
+        if(canMove && this.hp > 0 && paralysed <= 0){
             switch (c){
                 case 'U':
                     this.x--;
@@ -62,7 +62,7 @@ public abstract class Hero {
         }
     }
     public int checkForOpponents(ArrayList<Hero> allPlayers, int playerID){
-        if(this.hp == 0 && !wasAttackedThisRound){
+        if(this.hp <= 0 && !wasAttackedThisRound){
             return -1;
         }
         for(int i = 0; i < allPlayers.size(); i++){
@@ -76,12 +76,11 @@ public abstract class Hero {
         return  -1;
     }
     public void checkIfOpponentKilled(Hero hero){
-        if (hero.hp == 0){
+        if (hero.hp <= 0 && hero.wasAttackedThisRound){
             this.xp += Math.max(0, 200 - (this.level - hero.level) * 40);
         }
     }
     public void tryLevelUp(){
-        int minXPRequired = 250 + this.level * 50;
         int previousLevel = this.level;
         if(this.xp < 250){
             this.level = 0;
