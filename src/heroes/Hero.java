@@ -1,6 +1,6 @@
 package heroes;
 
-import com.company.OvertimeInfo;
+import main.OvertimeInfo;
 
 import java.util.ArrayList;
 
@@ -32,6 +32,9 @@ public abstract class Hero {
         if( this.hp > 0 && otDmg.numRounds > 0){
             this.hp -= otDmg.dmgPerRound;
             otDmg.numRounds --;
+            if(this.hp < 0){
+                this.hp = 0;
+            }
         }
     }
     public void move(char c){
@@ -58,6 +61,9 @@ public abstract class Hero {
         }
     }
     public int checkForOpponents(ArrayList<Hero> allPlayers, int playerID){
+        if(this.hp == 0 && !wasAttackedThisRound){
+            return -1;
+        }
         for(int i = 0; i < allPlayers.size(); i++){
             if(i != playerID &&
                this.x == allPlayers.get(i).x &&

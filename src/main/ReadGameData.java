@@ -1,4 +1,4 @@
-package com.company;
+package main;
 
 
 import fileio.implementations.FileReader;

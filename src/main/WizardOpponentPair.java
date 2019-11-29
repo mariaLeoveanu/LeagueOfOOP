@@ -1,4 +1,4 @@
-package com.company;
+package main;
 
 import heroes.Hero;
 import heroes.Wizard;

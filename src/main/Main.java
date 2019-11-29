@@ -1,17 +1,18 @@
-package com.company;
+package main;
 
+import fileio.implementations.FileWriter;
 import heroes.Hero;
 import heroes.Wizard;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         // write your code here
         ReadGameData readGameData = new ReadGameData("test");
+        FileWriter printData = new FileWriter("output");
         readGameData.readData();
         ArrayList<Hero> heroes = readGameData.heroes;
         ArrayList<WizardOpponentPair> wizards = new ArrayList<>();
@@ -47,11 +48,31 @@ public class Main {
             wizards.clear();
 
         }
+
         for(int j = 0; j < heroes.size(); j++){
-            System.out.println(heroes.get(j).name + " " + heroes.get(j).level + " "
-             + heroes.get(j).xp + " " + heroes.get(j).hp + " " + heroes.get(j).x +
-                    " " + heroes.get(j).y);
+            if (heroes.get(j).hp == 0){
+                printData.writeCharacter(heroes.get(j).name);
+                printData.writeWord(" dead");
+                System.out.println(heroes.get(j).name + " dead");
+            }else {
+                printData.writeCharacter(heroes.get(j).name);
+                printData.writeWord(" ");
+                printData.writeInt(heroes.get(j).level);
+                printData.writeWord(" ");
+                printData.writeInt(heroes.get(j).xp);
+                printData.writeWord(" ");
+                printData.writeInt(heroes.get(j).hp);
+                printData.writeWord(" ");
+                printData.writeInt(heroes.get(j).x);
+                printData.writeWord(" ");
+                printData.writeInt(heroes.get(j).y);
+                System.out.println(heroes.get(j).name + " " + heroes.get(j).level + " "
+                        + heroes.get(j).xp + " " + heroes.get(j).hp + " " + heroes.get(j).x +
+                        " " + heroes.get(j).y);
+            }
+            printData.writeNewLine();
         }
+        printData.close();
 
 
     }

@@ -58,14 +58,13 @@ public class Rogue extends Hero {
             backstabDamage = Math.round(backstabDamage * 1.25f);
             paralysisDamage = Math.round(paralysisDamage * 1.25f);
         }
-        
+
         // modify opponent hp
         if(hero.hp < backstabDamage + paralysisDamage){
             hero.hp = 0;
         }else {
             hero.hp = hero.hp - backstabDamage - paralysisDamage;
         }
-
         // give overtime damage
         hero.otDmg.numRounds = hero.paralysed;
         hero.otDmg.dmgPerRound = paralysisDamage;
