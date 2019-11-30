@@ -1,97 +1,211 @@
 package heroes;
 
+import main.Constants;
 import main.OvertimeInfo;
-
 import java.util.ArrayList;
 
 public abstract class Hero {
-    public int x;
-    public int y;
-    public int xp;
-    public int hp;
-    public int maxHP;
-    public int damageWoRaceModif;
-    public int level;
-    public int paralysed;
-    public boolean wasAttackedThisRound;
-    public char name;
-    public OvertimeInfo otDmg;
-    int healthPerLevel;
-    Hero(int x, int y){
-        paralysed = 0;
-        this.x = x;
-        this.y = y;
-        xp = 0;
-        level = 0;
-        wasAttackedThisRound = false;
-        damageWoRaceModif = 0;
-        otDmg = new OvertimeInfo(0,0);
+    private int x;
+    private int y;
+    private int xp;
+    private int hp;
+    private int maxHP;
+    // damageWoRaceModif stores the damage dealt to the wizard before race modifier was applied
+    private int damageWoRaceModif;
+    private int level;
+    // stores the number of rounds for which the player is unable to move,
+    // both for slam and paralysed abilities
+    private int paralysed;
+    private boolean wasAttackedThisRound;
+    private char name;
+    private OvertimeInfo otDmg;
+    private int healthPerLevel;
+
+    Hero(final int x, final int y) {
+        setX(x);
+        setY(y);
+        setParalysed(0);
+        setXp(0);
+        setLevel(0);
+        setWasAttackedThisRound(false);
+        setDamageWoRaceModif(0);
+        setOtDmg(new OvertimeInfo(0, 0));
     }
-    public void checkOtDmg(){
-        if(this.hp > 0 && otDmg.numRounds > 0){
-            this.hp -= otDmg.dmgPerRound;
-            otDmg.numRounds --;
-            if(this.hp < 0){
-                this.hp = 0;
+
+    public final void checkOtDmg() {
+        if (this.getHp() > 0 && getOtDmg().getNumRounds() > 0) {
+            this.setHp(this.getHp() - getOtDmg().getDmgPerRound());
+            getOtDmg().setNumRounds(getOtDmg().getNumRounds() - 1);
+
+            if (this.getHp() < 0) {
+                this.setHp(0);
             }
         }
     }
-    public void move(char c){
-        if(this.hp > 0 && paralysed <= 0 ){
-            switch (c){
+
+    public final void move(final char c) {
+        if (this.getHp() > 0 && getParalysed() <= 0) {
+            switch (c) {
                 case 'U':
-                    this.x--;
+                    this.setX(this.getX() - 1);
                     break;
                 case 'D':
-                    this.x++;
+                    this.setX(this.getX() + 1);
                     break;
                 case 'L':
-                    this.y--;
+                    this.setY(this.getY() - 1);
                     break;
                 case 'R':
-                    this.y++;
+                    this.setY(this.getY() + 1);
                     break;
                 case '_':
                     break;
+                default:
+                    break;
             }
         } else {
-            paralysed--;
+            // not move, decrease number of remaining rounds
+            setParalysed(getParalysed() - 1);
         }
     }
-    public int checkForOpponents(ArrayList<Hero> allPlayers, int playerID){
-        if(this.hp <= 0 && !wasAttackedThisRound){
+
+    public final int checkForOpponents(final ArrayList<Hero> allPlayers, final int playerID) {
+        // if the player was not attacked this round as is dead, it can't check for opponent
+        if (this.getHp() <= 0 && !isWasAttackedThisRound()) {
             return -1;
         }
-        for(int i = 0; i < allPlayers.size(); i++){
-            if(i != playerID &&
-               this.x == allPlayers.get(i).x &&
-               this.y == allPlayers.get(i).y &&
-               allPlayers.get(i).hp > 0 && !allPlayers.get(i).wasAttackedThisRound){
+        for (int i = 0; i < allPlayers.size(); i++) {
+            if (i != playerID
+                && this.getX() == allPlayers.get(i).getX()
+                && this.getY() == allPlayers.get(i).getY()
+                && allPlayers.get(i).getHp() > 0
+                && !allPlayers.get(i).isWasAttackedThisRound()) {
                 return i;
             }
         }
-        return  -1;
+        return -1;
     }
-    public void checkIfOpponentKilled(Hero hero){
-        if (hero.hp <= 0 && hero.wasAttackedThisRound){
-            this.xp += Math.max(0, 200 - (this.level - hero.level) * 40);
+
+    public final void checkIfOpponentKilled(final Hero hero) {
+        if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
+            this.setXp(this.getXp() + Math.max(0,
+                    Constants.XP_FORMULA_MINUEND
+                    - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
         }
     }
-    public void tryLevelUp(){
-        if(this.hp <= 0){
+
+    public final void tryLevelUp() {
+        if (this.getHp() <= 0) {
             return;
         }
-        int previousLevel = this.level;
-        if(this.xp < 250){
-            this.level = 0;
+        int previousLevel = this.getLevel();
+        if (this.getXp() < Constants.BASE_XP) {
+            this.setLevel(0);
         } else {
-            this.level = (this.xp - 250)/50 + 1;
-            if(this.level != previousLevel){
-                this.maxHP = this.maxHP + this.level * this.healthPerLevel;
-                this.hp = this.maxHP;
+            this.setLevel((this.getXp() - Constants.BASE_XP) / Constants.XP_PER_LEVEL + 1);
+            // if there actually was a level up, modify hp stats
+            if (this.getLevel() != previousLevel) {
+                this.setMaxHP(this.getMaxHP() + this.getLevel() * this.getHealthPerLevel());
+                this.setHp(this.getMaxHP());
             }
         }
     }
+
     public abstract void attack(Hero hero, char[][] map);
 
+    public final int getX() {
+        return x;
+    }
+
+    public final void setX(final int x) {
+        this.x = x;
+    }
+
+    public final int getY() {
+        return y;
+    }
+
+    public final void setY(final int y) {
+        this.y = y;
+    }
+
+    public final int getXp() {
+        return xp;
+    }
+
+    public final void setXp(final int xp) {
+        this.xp = xp;
+    }
+
+    public final int getHp() {
+        return hp;
+    }
+
+    public final void setHp(final int hp) {
+        this.hp = hp;
+    }
+
+    public final int getMaxHP() {
+        return maxHP;
+    }
+
+    public final void setMaxHP(final int maxHP) {
+        this.maxHP = maxHP;
+    }
+
+    public final int getDamageWoRaceModif() {
+        return damageWoRaceModif;
+    }
+
+    public final void setDamageWoRaceModif(final int damageWoRaceModif) {
+        this.damageWoRaceModif = damageWoRaceModif;
+    }
+
+    public final int getLevel() {
+        return level;
+    }
+
+    public final void setLevel(final int level) {
+        this.level = level;
+    }
+
+    public final int getParalysed() {
+        return paralysed;
+    }
+
+    public final void setParalysed(final int paralysed) {
+        this.paralysed = paralysed;
+    }
+
+    public final boolean isWasAttackedThisRound() {
+        return wasAttackedThisRound;
+    }
+
+    public final void setWasAttackedThisRound(final boolean wasAttackedThisRound) {
+        this.wasAttackedThisRound = wasAttackedThisRound;
+    }
+
+    public final char getName() {
+        return name;
+    }
+
+    public final void setName(final char name) {
+        this.name = name;
+    }
+
+    public final OvertimeInfo getOtDmg() {
+        return otDmg;
+    }
+
+    public final void setOtDmg(final OvertimeInfo otDmg) {
+        this.otDmg = otDmg;
+    }
+
+    public final int getHealthPerLevel() {
+        return healthPerLevel;
+    }
+
+    public final void setHealthPerLevel(final int healthPerLevel) {
+        this.healthPerLevel = healthPerLevel;
+    }
 }

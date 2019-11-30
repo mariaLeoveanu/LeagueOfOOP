@@ -4,48 +4,110 @@ package main;
 import fileio.implementations.FileReader;
 import heroes.Hero;
 import heroes.HeroFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReadGameData {
-    String filename;
-    int columns, rows, rounds, players;
+public final class ReadGameData {
+    private String filename;
+    private int columns;
+    private int rows;
+    private int rounds;
+    private int players;
 
-    LandMap map;
-    ArrayList<Hero> heroes = new ArrayList<>();
-    char[][] movesMat;
-    ReadGameData(String f){
-        filename = f;
+    private LandMap map;
+    private ArrayList<Hero> heroes = new ArrayList<>();
+    private char[][] movesMat;
+
+    ReadGameData(final String f) {
+        setFilename(f);
     }
+
     public void readData() throws IOException {
+        FileReader fileReader = new FileReader(getFilename());
 
-        FileReader fileReader = new FileReader(filename);
-
-        rows = fileReader.nextInt();
-        columns = fileReader.nextInt();
+        setRows(fileReader.nextInt());
+        setColumns(fileReader.nextInt());
 
         ArrayList<String> mapContent = new ArrayList<>();
-        for (int i = 0; i < rows; i++){
+        for (int i = 0; i < getRows(); i++) {
             mapContent.add(fileReader.nextWord());
         }
-        map = LandMap.getInstance(mapContent);
+        setMap(LandMap.getInstance(mapContent));
 
-        players = fileReader.nextInt();
+        setPlayers(fileReader.nextInt());
 
         String currentType;
         HeroFactory heroFactory = new HeroFactory();
         int x, y;
-        for(int i = 0; i < players; i++){
+        for (int i = 0; i < getPlayers(); i++) {
             currentType = fileReader.nextWord();
             x = fileReader.nextInt();
             y = fileReader.nextInt();
-            heroes.add(heroFactory.makeNewHero(currentType, x, y));
+            getHeroes().add(heroFactory.makeNewHero(currentType, x, y));
         }
 
-        rounds = fileReader.nextInt();
-        movesMat = new char[rounds][players];
-        for(int i = 0; i < rounds; i++){
-            movesMat[i] = fileReader.nextWord().toCharArray();
+        setRounds(fileReader.nextInt());
+        setMovesMat(new char[getRounds()][getPlayers()]);
+        for (int i = 0; i < getRounds(); i++) {
+            getMovesMat()[i] = fileReader.nextWord().toCharArray();
         }
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(final String filename) {
+        this.filename = filename;
+    }
+
+    public void setColumns(final int columns) {
+        this.columns = columns;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(final int rows) {
+        this.rows = rows;
+    }
+
+    public int getRounds() {
+        return rounds;
+    }
+
+    public void setRounds(final int rounds) {
+        this.rounds = rounds;
+    }
+
+    public int getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(final int players) {
+        this.players = players;
+    }
+
+    public LandMap getMap() {
+        return map;
+    }
+
+    public void setMap(final LandMap map) {
+        this.map = map;
+    }
+
+    public ArrayList<Hero> getHeroes() {
+        return heroes;
+    }
+
+
+    public char[][] getMovesMat() {
+        return movesMat;
+    }
+
+    public void setMovesMat(final char[][] movesMat) {
+        this.movesMat = movesMat;
     }
 }

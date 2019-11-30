@@ -1,60 +1,70 @@
 package heroes;
 
 
-public class Knight extends Hero {
-    Knight(int x, int y) {
+import main.Constants;
+
+public final class Knight extends Hero {
+    Knight(final int x, final int y) {
         super(x, y);
-        hp = 900;
-        maxHP = 900;
-        name = 'K';
-        healthPerLevel = 80;
+        setHp(Constants.KNIGHT_BASE_HP);
+        setMaxHP(Constants.KNIGHT_BASE_HP);
+        setName('K');
+        setHealthPerLevel(Constants.KNIGHT_HP_PER_LEVEL);
     }
 
     @Override
-    public void attack(Hero hero, char[][] map) {
-        int executeDamage = 200 + 30 * level;
-        int slamDamage = 100 + 40 * level;
+    public void attack(final Hero hero, final char[][] map) {
+        int executeDamage = Constants.EXECUTE_BASE_DAMAGE
+                            + Constants.EXECUTE_DAMAGE_PER_LEVEL * getLevel();
+        int slamDamage = Constants.SLAM_BASE_DAMAGE + Constants.SLAM_DAMAGE_PER_LEVEL * getLevel();
 
-        //order of modifiers LAND, RACE
-        if (map[this.x][this.y] == 'L') {
-            executeDamage = Math.round(executeDamage * 1.15f);
-            slamDamage = Math.round(slamDamage * 1.15f);
+        // first add land modifier
+        if (map[this.getX()][this.getY()] == 'L') {
+            executeDamage = Math.round(executeDamage * Constants.KNIGHT_LAND_MULTIPLIER);
+            slamDamage = Math.round(slamDamage * Constants.KNIGHT_LAND_MULTIPLIER);
         }
-        //execute
-        float hpLimit = (0.2f + 0.01f * level) * hero.maxHP;
-        if (hero.hp < hpLimit) {
-            executeDamage = hero.hp;
-            hero.hp = 0;
-            damageWoRaceModif = executeDamage + slamDamage;
+        // check the minimum hp limit
+        float hpLimit = (Constants.EXECUTE_BASE_HP_LIMIT
+                        + Constants.EXECUTE_HP_LIMIT_PER_LEVEL * getLevel()) * hero.getMaxHP();
+        if (hero.getHp() < hpLimit) {
+            executeDamage = hero.getHp();
+            hero.setHp(0);
+            // if the opponent is a wizard, set the damage for deflect ability
+            if (Wizard.class.equals(hero.getClass())) {
+                setDamageWoRaceModif(executeDamage + slamDamage);
+            }
         } else {
-            damageWoRaceModif =  executeDamage + slamDamage;
             if (Rogue.class.equals(hero.getClass())) {
-                executeDamage = Math.round(executeDamage * 1.15f);
-                slamDamage = Math.round(slamDamage * 0.8f);
+                executeDamage = Math.round(executeDamage * Constants.EXECUTE_ROGUE_MULTIPLIER);
+                slamDamage = Math.round(slamDamage * Constants.SLAM_ROGUE_MULTIPLIER);
             }
             if (Knight.class.equals(hero.getClass())) {
-                slamDamage = Math.round(slamDamage * 1.2f);
+                slamDamage = Math.round(slamDamage * Constants.SLAM_KNIGHT_MULTIPLIER);
             }
             if (Pyromancer.class.equals(hero.getClass())) {
-                executeDamage = Math.round(executeDamage * 1.1f);
-                slamDamage = Math.round(slamDamage * 0.9f);
+                executeDamage = Math.round(executeDamage * Constants.EXECUTE_PYROMANCER_MULTIPLIER);
+                slamDamage = Math.round(slamDamage * Constants.SLAM_PYROMANCER_MULTIPLIER);
             }
             if (Wizard.class.equals(hero.getClass())) {
-                executeDamage = Math.round(executeDamage * 0.8f);
-                slamDamage = Math.round(slamDamage * 1.05f);
+                // save the damage only for wizard opponent
+                // as it is only accessed in wizard class
+                setDamageWoRaceModif(executeDamage + slamDamage);
+                executeDamage = Math.round(executeDamage * Constants.EXECUTE_WIZARD_MULTIPLIER);
+                slamDamage = Math.round(slamDamage * Constants.SLAM_WIZARD_MULTIPLIER);
             }
 
-            hero.paralysed = 1;
+            hero.setParalysed(1);
+
             // reset any overtime damage that was before
-            hero.otDmg.numRounds = 0;
-            hero.otDmg.dmgPerRound = 0;
-            if(hero.hp < executeDamage + slamDamage){
-                hero.hp = 0;
-            }else {
-                hero.hp = hero.hp - executeDamage - slamDamage;
-            }
+            hero.getOtDmg().setNumRounds(0);
+            hero.getOtDmg().setDmgPerRound(0);
 
+            if (hero.getHp() < executeDamage + slamDamage) {
+                hero.setHp(0);
+            } else {
+                hero.setHp(hero.getHp() - executeDamage - slamDamage);
+            }
         }
-        hero.wasAttackedThisRound = true;
+        hero.setWasAttackedThisRound(true);
     }
 }

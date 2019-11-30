@@ -1,50 +1,58 @@
 package heroes;
 
+import main.Constants;
+
 public class Wizard extends Hero {
-    Wizard(int x, int y) {
+    Wizard(final int x, final int y) {
         super(x, y);
-        hp = 400;
-        maxHP = 400;
-        healthPerLevel = 30;
-        name = 'W';
+        setHp(Constants.WIZARD_BASE_HP);
+        setMaxHP(Constants.WIZARD_BASE_HP);
+        setHealthPerLevel(Constants.WIZARD_HP_PER_LEVEL);
+        setName('W');
     }
 
     @Override
-    public void attack(Hero hero, char[][] map) {
-        float drainPc = 0.2f + 0.05f * level;
-        float deflectPc = 0.35f + 0.02f * level;
-        int drainDamage = 1;
+    public final void attack(final Hero hero, final char[][] map) {
+        float drainPc = Constants.DRAIN_BASE_PERCENTAGE + Constants.DRAIN_P_PER_ROUND * getLevel();
+        float deflectPc = Constants.DEFLECT_BASE_PERCENTAGE
+                + Constants.DEFLECT_P_PER_ROUND * getLevel();
+        int drainDamage;
         int deflectDamage = 0;
+
         if (Rogue.class.equals(hero.getClass())) {
-            drainPc = drainPc * 0.8f;
-            deflectDamage = Math.round(Math.round(deflectPc * hero.damageWoRaceModif) * 1.2f);
+            drainPc = drainPc * Constants.DRAIN_ROGUE_MULTIPLIER;
+            deflectDamage = Math.round(Math.round(deflectPc * hero.getDamageWoRaceModif())
+                    * Constants.DEFLECT_ROGUE_MULTIPLIER);
         }
         if (Knight.class.equals(hero.getClass())) {
-            drainPc = drainPc * 1.2f;
-            deflectDamage = Math.round(Math.round(deflectPc * hero.damageWoRaceModif) * 1.4f);
+            drainPc = drainPc * Constants.DRAIN_KNIGHT_MULTIPLIER;
+            deflectDamage = Math.round(Math.round(deflectPc * hero.getDamageWoRaceModif())
+                    * Constants.DEFLECT_KNIGHT_MULTIPLIER);
         }
         if (Pyromancer.class.equals(hero.getClass())) {
-            drainPc = drainPc * 0.9f;
-            deflectDamage = Math.round(Math.round(deflectPc * hero.damageWoRaceModif) * 1.3f);
+            drainPc = drainPc * Constants.DRAIN_PYROMANCER_MULTIPLIER;
+            deflectDamage = Math.round(Math.round(deflectPc * hero.getDamageWoRaceModif())
+                    * Constants.DEFLECT_PYROMANCER_MULTIPLIER);
         }
         if (Wizard.class.equals(hero.getClass())) {
-            drainPc = drainPc * 1.05f;
+            drainPc = drainPc * Constants.DRAIN_WIZARD_MULTIPLIER;
             deflectDamage = 0;
         }
-        if(map[this.x][this.y] == 'D'){
-            drainPc = drainPc * 1.1f;
-            deflectDamage = Math.round(deflectDamage * 1.1f);
+
+        if (map[this.getX()][this.getY()] == 'D') {
+            drainPc = drainPc * Constants.WIZARD_LAND_MULTIPLIER;
+            deflectDamage = Math.round(deflectDamage * Constants.WIZARD_LAND_MULTIPLIER);
         }
-        drainDamage = Math.round(drainPc * Math.min(0.3f * hero.maxHP, hero.hp));
+        drainDamage = Math.round(drainPc
+                * Math.min(Constants.DRAIN_MAX_HP_MULTIPLIER * hero.getMaxHP(), hero.getHp()));
 
-        if(hero.hp < deflectDamage + drainDamage){
-            hero.hp = 0;
-        }else{
-            hero.hp = hero.hp - deflectDamage - drainDamage;
+        if (hero.getHp() < deflectDamage + drainDamage) {
+            hero.setHp(0);
+        } else {
+            hero.setHp(hero.getHp() - deflectDamage - drainDamage);
         }
 
-        hero.wasAttackedThisRound = true;
-
+        hero.setWasAttackedThisRound(true);
 
 
     }
