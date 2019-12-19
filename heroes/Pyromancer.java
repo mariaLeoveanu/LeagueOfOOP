@@ -1,5 +1,6 @@
 package heroes;
 
+import angels.Visitor;
 import main.Constants;
 import strategy.StrategyFactory;
 
@@ -88,6 +89,11 @@ public final class Pyromancer extends Hero {
         }
         hero.setWasAttackedThisRound(true);
 
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.apply(this);
     }
 
 }

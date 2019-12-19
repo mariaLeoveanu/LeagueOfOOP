@@ -1,5 +1,6 @@
 package heroes;
 
+import angels.Visitor;
 import main.Constants;
 import strategy.Strategy;
 import strategy.StrategyFactory;
@@ -64,5 +65,10 @@ public class Wizard extends Hero {
         hero.setWasAttackedThisRound(true);
 
 
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.apply(this);
     }
 }

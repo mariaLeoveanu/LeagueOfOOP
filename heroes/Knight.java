@@ -1,8 +1,8 @@
 package heroes;
 
 
+import angels.Visitor;
 import main.Constants;
-import strategy.Strategy;
 import strategy.StrategyFactory;
 
 public final class Knight extends Hero {
@@ -79,5 +79,10 @@ public final class Knight extends Hero {
         }
         System.out.println("Damage Knight: " + executeDamage + slamDamage);
         hero.setWasAttackedThisRound(true);
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.apply(this);
     }
 }

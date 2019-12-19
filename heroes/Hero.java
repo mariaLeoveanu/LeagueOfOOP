@@ -1,5 +1,6 @@
 package heroes;
 
+import angels.Visitor;
 import main.Constants;
 import main.OvertimeInfo;
 import strategy.Strategy;
@@ -118,6 +119,7 @@ public abstract class Hero {
     }
 
     public abstract void attack(Hero hero, char[][] map);
+    public abstract void accept(Visitor v);
 
     public final int getX() {
         return x;

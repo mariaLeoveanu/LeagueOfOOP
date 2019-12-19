@@ -55,6 +55,18 @@ final class GameProcess {
             }
 
             wizards.clear();
+
+            // angels spawn
+
+            for (int j = 0; j < readGameData.angels.get(i).size(); j++){
+                ArrayList<Integer> neighbours = new ArrayList<>();
+                neighbours = readGameData.angels.get(i).get(j).checkForHeroes(heroes);
+                if (neighbours != null && neighbours.size() > 0){
+                    for (Integer neighbour : neighbours) {
+                        heroes.get(neighbour).accept(readGameData.angels.get(i).get(j));
+                    }
+                }
+            }
         }
     }
 }

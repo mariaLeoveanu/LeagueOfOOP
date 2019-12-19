@@ -1,5 +1,6 @@
 package heroes;
 
+import angels.Visitor;
 import main.Constants;
 import strategy.StrategyFactory;
 
@@ -93,5 +94,10 @@ public class Rogue extends Hero {
 
         hero.setWasAttackedThisRound(true);
         previousLand = map[this.getX()][this.getY()];
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.apply(this);
     }
 }

@@ -1,12 +1,15 @@
 package main;
 
 
+import angels.AngelFactory;
+import angels.Visitor;
 import fileio.implementations.FileReader;
 import heroes.Hero;
 import heroes.HeroFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class ReadGameData {
     private String filename;
@@ -18,6 +21,7 @@ public final class ReadGameData {
     private LandMap map;
     private ArrayList<Hero> heroes = new ArrayList<>();
     private char[][] movesMat;
+    public ArrayList<ArrayList<Visitor>> angels = new ArrayList<>();
 
     ReadGameData(final String f) {
         setFilename(f);
@@ -52,6 +56,22 @@ public final class ReadGameData {
         for (int i = 0; i < getRounds(); i++) {
             getMovesMat()[i] = fileReader.nextWord().toCharArray();
         }
+        AngelFactory angelFactory = new AngelFactory();
+        for(int i = 0; i < rounds; i++){
+            // read number of angels in current round
+            int angelsThisRound = fileReader.nextInt();
+            ArrayList<Visitor> roundAngels = new ArrayList<>();
+            for (int j = 0; j < angelsThisRound; j++){
+                // read each angel on current line
+                String angel = fileReader.nextWord();
+                ArrayList<String> contents = new ArrayList<>(Arrays.asList(angel.split(",")));
+                roundAngels.add(angelFactory.getAngelVisitor(contents.get(0),
+                        Integer.parseInt(contents.get(1)), Integer.parseInt(contents.get(2))));
+            }
+            //add list of angles in current round to total of angels
+            angels.add(roundAngels);
+        }
+
     }
 
     public String getFilename() {
