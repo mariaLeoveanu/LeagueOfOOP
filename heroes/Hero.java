@@ -2,6 +2,9 @@ package heroes;
 
 import main.Constants;
 import main.OvertimeInfo;
+import strategy.Strategy;
+import strategy.StrategyFactory;
+
 import java.util.ArrayList;
 
 public abstract class Hero {
@@ -20,6 +23,8 @@ public abstract class Hero {
     private char name;
     private OvertimeInfo otDmg;
     private int healthPerLevel;
+    public float raceModifierChange;
+    Strategy chosenStrategy;
 
     Hero(final int x, final int y) {
         setX(x);
@@ -30,6 +35,7 @@ public abstract class Hero {
         setWasAttackedThisRound(false);
         setDamageWoRaceModif(0);
         setOtDmg(new OvertimeInfo(0, 0));
+        raceModifierChange = 0;
     }
 
     public final void checkOtDmg() {

@@ -1,6 +1,8 @@
 package heroes;
 
 import main.Constants;
+import strategy.Strategy;
+import strategy.StrategyFactory;
 
 public class Wizard extends Hero {
     Wizard(final int x, final int y) {
@@ -13,6 +15,13 @@ public class Wizard extends Hero {
 
     @Override
     public final void attack(final Hero hero, final char[][] map) {
+
+        StrategyFactory strategyFactory = new StrategyFactory();
+        this.chosenStrategy = strategyFactory.getStrategy(this);
+        if(this.chosenStrategy != null){
+            this.chosenStrategy.applyStrategy(this);
+        }
+        //check if racemodifers stacks or resets
         float drainPc = Constants.DRAIN_BASE_PERCENTAGE + Constants.DRAIN_P_PER_ROUND * getLevel();
         float deflectPc = Constants.DEFLECT_BASE_PERCENTAGE
                 + Constants.DEFLECT_P_PER_ROUND * getLevel();
@@ -20,22 +29,22 @@ public class Wizard extends Hero {
         int deflectDamage = 0;
 
         if (Rogue.class.equals(hero.getClass())) {
-            drainPc = drainPc * Constants.DRAIN_ROGUE_MULTIPLIER;
+            drainPc = drainPc * (Constants.DRAIN_ROGUE_MULTIPLIER + this.raceModifierChange);
             deflectDamage = Math.round(Math.round(deflectPc * hero.getDamageWoRaceModif())
-                    * Constants.DEFLECT_ROGUE_MULTIPLIER);
+                    * (Constants.DEFLECT_ROGUE_MULTIPLIER + this.raceModifierChange));
         }
         if (Knight.class.equals(hero.getClass())) {
-            drainPc = drainPc * Constants.DRAIN_KNIGHT_MULTIPLIER;
+            drainPc = drainPc * (Constants.DRAIN_KNIGHT_MULTIPLIER + this.raceModifierChange);
             deflectDamage = Math.round(Math.round(deflectPc * hero.getDamageWoRaceModif())
-                    * Constants.DEFLECT_KNIGHT_MULTIPLIER);
+                    * (Constants.DEFLECT_KNIGHT_MULTIPLIER + this.raceModifierChange));
         }
         if (Pyromancer.class.equals(hero.getClass())) {
-            drainPc = drainPc * Constants.DRAIN_PYROMANCER_MULTIPLIER;
+            drainPc = drainPc * (Constants.DRAIN_PYROMANCER_MULTIPLIER + this.raceModifierChange);
             deflectDamage = Math.round(Math.round(deflectPc * hero.getDamageWoRaceModif())
-                    * Constants.DEFLECT_PYROMANCER_MULTIPLIER);
+                    * (Constants.DEFLECT_PYROMANCER_MULTIPLIER + this.raceModifierChange));
         }
         if (Wizard.class.equals(hero.getClass())) {
-            drainPc = drainPc * Constants.DRAIN_WIZARD_MULTIPLIER;
+            drainPc = drainPc * (Constants.DRAIN_WIZARD_MULTIPLIER + this.raceModifierChange);
             deflectDamage = 0;
         }
 

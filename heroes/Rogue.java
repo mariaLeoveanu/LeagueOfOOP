@@ -1,6 +1,7 @@
 package heroes;
 
 import main.Constants;
+import strategy.StrategyFactory;
 
 public class Rogue extends Hero {
     private int streak;
@@ -19,6 +20,13 @@ public class Rogue extends Hero {
 
     @Override
     public final void attack(final Hero hero, final char[][] map) {
+
+        StrategyFactory strategyFactory = new StrategyFactory();
+        this.chosenStrategy = strategyFactory.getStrategy(this);
+        if(this.chosenStrategy != null){
+            this.chosenStrategy.applyStrategy(this);
+        }
+
         int backstabDamage = Constants.BACKSTAB_BASE_DAMAGE
                 + Constants.BACKSTAB_DAMAGE_PER_LEVEL * getLevel();
         int paralysisDamage = Constants.PARALYSIS_BASE_DAMAGE
@@ -48,28 +56,28 @@ public class Rogue extends Hero {
             hero.setParalysed(Constants.ROGUE_PARALYSIS_MIN_ROUNDS);
         } else {
             hero.setParalysed(Constants.ROGUE_PARALYSIS_MAX_ROUNDS);
-            backstabDamage = Math.round(backstabDamage * Constants.ROGUE_LAND_MULTIPLIER);
-            paralysisDamage = Math.round(paralysisDamage * Constants.ROGUE_LAND_MULTIPLIER);
+            backstabDamage = Math.round(backstabDamage * (Constants.ROGUE_LAND_MULTIPLIER + this.raceModifierChange));
+            paralysisDamage = Math.round(paralysisDamage * (Constants.ROGUE_LAND_MULTIPLIER + this.raceModifierChange));
         }
 
         // add race bonus
         if (Rogue.class.equals(hero.getClass())) {
-            backstabDamage = Math.round(backstabDamage * Constants.BACKSTAB_ROGUE_MULTIPLIER);
+            backstabDamage = Math.round(backstabDamage * (Constants.BACKSTAB_ROGUE_MULTIPLIER + this.raceModifierChange));
             paralysisDamage = Math.round(paralysisDamage * Constants.PRALYSIS_ROGUE_MULTIPLIER);
         }
         if (Knight.class.equals(hero.getClass())) {
-            backstabDamage = Math.round(backstabDamage * Constants.BACKSTAB_KNIGHT_MULTIPLIER);
-            paralysisDamage = Math.round(paralysisDamage * Constants.PRALYSIS_KNIGHT_MULTIPLIER);
+            backstabDamage = Math.round(backstabDamage * (Constants.BACKSTAB_KNIGHT_MULTIPLIER + this.raceModifierChange));
+            paralysisDamage = Math.round(paralysisDamage * (Constants.PRALYSIS_KNIGHT_MULTIPLIER + this.raceModifierChange));
         }
         if (Pyromancer.class.equals(hero.getClass())) {
-            backstabDamage = Math.round(backstabDamage * Constants.BACKSTAB_PYROMANCER_MULTIPLIER);
+            backstabDamage = Math.round(backstabDamage * (Constants.BACKSTAB_PYROMANCER_MULTIPLIER + this.raceModifierChange));
             paralysisDamage = Math.round(paralysisDamage
-                    * Constants.PRALYSIS_PYROMANCER_MULTIPLIER);
+                    * (Constants.PRALYSIS_PYROMANCER_MULTIPLIER + this.raceModifierChange));
         }
         if (Wizard.class.equals(hero.getClass())) {
             setDamageWoRaceModif(backstabDamage + paralysisDamage);
-            backstabDamage = Math.round(backstabDamage * Constants.ROGUE_ABILITY_WIZARD_BONUS);
-            paralysisDamage = Math.round(paralysisDamage * Constants.ROGUE_ABILITY_WIZARD_BONUS);
+            backstabDamage = Math.round(backstabDamage * (Constants.ROGUE_ABILITY_WIZARD_BONUS + this.raceModifierChange));
+            paralysisDamage = Math.round(paralysisDamage * (Constants.ROGUE_ABILITY_WIZARD_BONUS + this.raceModifierChange));
         }
 
         // any existing overtime damage is reset

@@ -2,6 +2,8 @@ package heroes;
 
 
 import main.Constants;
+import strategy.Strategy;
+import strategy.StrategyFactory;
 
 public final class Knight extends Hero {
     Knight(final int x, final int y) {
@@ -14,6 +16,15 @@ public final class Knight extends Hero {
 
     @Override
     public void attack(final Hero hero, final char[][] map) {
+
+        StrategyFactory strategyFactory = new StrategyFactory();
+        this.chosenStrategy = strategyFactory.getStrategy(this);
+        if (this.chosenStrategy != null){
+            this.chosenStrategy.applyStrategy(this);
+        }
+
+        System.out.println("Knight extra race modif:" + this.raceModifierChange);
+
         int executeDamage = Constants.EXECUTE_BASE_DAMAGE
                             + Constants.EXECUTE_DAMAGE_PER_LEVEL * getLevel();
         int slamDamage = Constants.SLAM_BASE_DAMAGE + Constants.SLAM_DAMAGE_PER_LEVEL * getLevel();
@@ -35,22 +46,23 @@ public final class Knight extends Hero {
             }
         } else {
             if (Rogue.class.equals(hero.getClass())) {
-                executeDamage = Math.round(executeDamage * Constants.EXECUTE_ROGUE_MULTIPLIER);
-                slamDamage = Math.round(slamDamage * Constants.SLAM_ROGUE_MULTIPLIER);
+                executeDamage = Math.round(executeDamage * (Constants.EXECUTE_ROGUE_MULTIPLIER + this.raceModifierChange));
+                slamDamage = Math.round(slamDamage * (Constants.SLAM_ROGUE_MULTIPLIER + this.raceModifierChange));
             }
             if (Knight.class.equals(hero.getClass())) {
-                slamDamage = Math.round(slamDamage * Constants.SLAM_KNIGHT_MULTIPLIER);
+                executeDamage = Math.round(executeDamage * (1 + this.raceModifierChange));
+                slamDamage = Math.round(slamDamage * (Constants.SLAM_KNIGHT_MULTIPLIER + this.raceModifierChange));
             }
             if (Pyromancer.class.equals(hero.getClass())) {
-                executeDamage = Math.round(executeDamage * Constants.EXECUTE_PYROMANCER_MULTIPLIER);
-                slamDamage = Math.round(slamDamage * Constants.SLAM_PYROMANCER_MULTIPLIER);
+                executeDamage = Math.round(executeDamage * (Constants.EXECUTE_PYROMANCER_MULTIPLIER + this.raceModifierChange));
+                slamDamage = Math.round(slamDamage * (Constants.SLAM_PYROMANCER_MULTIPLIER + this.raceModifierChange));
             }
             if (Wizard.class.equals(hero.getClass())) {
                 // save the damage only for wizard opponent
                 // as it is only accessed in wizard class
                 setDamageWoRaceModif(executeDamage + slamDamage);
-                executeDamage = Math.round(executeDamage * Constants.EXECUTE_WIZARD_MULTIPLIER);
-                slamDamage = Math.round(slamDamage * Constants.SLAM_WIZARD_MULTIPLIER);
+                executeDamage = Math.round(executeDamage * (Constants.EXECUTE_WIZARD_MULTIPLIER + this.raceModifierChange));
+                slamDamage = Math.round(slamDamage * (Constants.SLAM_WIZARD_MULTIPLIER+ this.raceModifierChange));
             }
 
             hero.setParalysed(1);
@@ -65,6 +77,7 @@ public final class Knight extends Hero {
                 hero.setHp(hero.getHp() - executeDamage - slamDamage);
             }
         }
+        System.out.println("Damage Knight: " + executeDamage + slamDamage);
         hero.setWasAttackedThisRound(true);
     }
 }
