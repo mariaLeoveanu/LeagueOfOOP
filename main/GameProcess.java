@@ -67,6 +67,7 @@ final class GameProcess {
                 if (neighbours != null && neighbours.size() > 0){
                     for (Integer neighbour : neighbours) {
                         heroes.get(neighbour).accept(readGameData.angels.get(i).get(j));
+                        readGameData.angels.get(i).get(j).update(heroes.get(neighbour).getName(), neighbour);
                     }
                 }
             }

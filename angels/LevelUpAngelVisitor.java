@@ -8,6 +8,8 @@ import heroes.Wizard;
 public class LevelUpAngelVisitor extends Visitor {
     LevelUpAngelVisitor(int x, int y) {
         super(x, y);
+        name = "LevelUpAngel";
+        actionType = "helped";
     }
 
     @Override
@@ -31,6 +33,12 @@ public class LevelUpAngelVisitor extends Visitor {
 
     @Override
     public void apply(Rogue r) {
+
+    }
+
+    @Override
+    public void update(char playerType, int playerID) {
+        System.out.println(this.name + " " + this.actionType + " " + playerType + " " + playerID);
 
     }
 }

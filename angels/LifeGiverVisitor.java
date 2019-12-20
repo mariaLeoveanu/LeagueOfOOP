@@ -5,10 +5,13 @@ import heroes.Pyromancer;
 import heroes.Rogue;
 import heroes.Wizard;
 
-public class LifeGiverVisitor extends Visitor {
+public class LifeGiverVisitor extends Visitor  {
     LifeGiverVisitor(int x, int y) {
         super(x, y);
+        name = "LifeGiver";
+        actionType = "helped";
     }
+
 
     @Override
     public void apply(Knight k) {
@@ -33,4 +36,11 @@ public class LifeGiverVisitor extends Visitor {
     public void apply(Rogue r) {
         r.setHp(r.getHp() + 90);
     }
+
+    @Override
+    public void update(char playerType, int playerID) {
+        System.out.println(this.name + " " + this.actionType + " " + playerType + " " + playerID);
+    }
+
+
 }
