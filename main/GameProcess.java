@@ -23,6 +23,7 @@ final class GameProcess {
             //all players check if they have any overtime damage
             for (int j = 0; j < readGameData.getPlayers(); j++) {
                 heroes.get(j).checkOtDmg();
+                heroes.get(j).chooseStrategy();
             }
 
             for (int j = 0; j < readGameData.getPlayers(); j++) {
@@ -53,6 +54,8 @@ final class GameProcess {
                 heroes.get(j).setWasAttackedThisRound(false);
                 heroes.get(j).tryLevelUp();
             }
+
+
 
             wizards.clear();
 

@@ -1,48 +1,46 @@
 package strategy;
 
-import heroes.Knight;
-import heroes.Pyromancer;
-import heroes.Rogue;
-import heroes.Wizard;
+import heroes.*;
 
 public class StrategyFactory {
-    public Strategy getStrategy(Knight knight){
-        if(knight.getMaxHP() / 3 < knight.getHp() &&
-           knight.getHp() < (knight.getMaxHP() / 2)) {
-            return new DecreaseHPIncreaseStatsStrategy();
+    public Strategy getStrategy(Hero hero){
+        if (hero.getClass().equals(Knight.class)) {
+            if (hero.getMaxHP() / 3 < hero.getHp() &&
+                    hero.getHp() < (hero.getMaxHP() / 2)) {
+                return new DecreaseHPIncreaseStatsStrategy();
+            }
+            if (hero.getHp() < hero.getMaxHP() / 3) {
+                return new IncreaseHPDecreaseStatsStrategy();
+            }
+
         }
-        if(knight.getHp() < knight.getMaxHP() / 3) {
-            return new IncreaseHPDecreaseStatsStrategy();
+        if(hero.getClass().equals(Pyromancer.class)){
+            if(hero.getMaxHP() / 4 < hero.getHp() &&
+                    hero.getHp() < hero.getMaxHP() / 3){
+                return new DecreaseHPIncreaseStatsStrategy();
+            }
+            if (hero.getHp() < hero.getMaxHP() / 4){
+                System.out.println(hero.getMaxHP()/4 + " < " + hero.getHp() + " < " + hero.getHp()/3 );
+                return new IncreaseHPDecreaseStatsStrategy();
+            }
         }
-        return null;
-    }
-    public Strategy getStrategy(Pyromancer pyromancer){
-        if(pyromancer.getMaxHP() / 4 < pyromancer.getHp() &&
-           pyromancer.getHp() < pyromancer.getMaxHP() / 3){
-            return new DecreaseHPIncreaseStatsStrategy();
+        if(hero.getClass().equals(Rogue.class)){
+            if(hero.getMaxHP() / 7 < hero.getHp() &&
+                    hero.getHp() < hero.getMaxHP() / 5){
+                return new DecreaseHPIncreaseStatsStrategy();
+            }
+            if (hero.getHp() < hero.getMaxHP() / 7){
+                return new IncreaseHPDecreaseStatsStrategy();
+            }
         }
-        if (pyromancer.getHp() < pyromancer.getMaxHP() / 4){
-            return new IncreaseHPDecreaseStatsStrategy();
-        }
-        return null;
-    }
-    public Strategy getStrategy(Rogue rogue){
-        if(rogue.getMaxHP() / 7 < rogue.getHp() &&
-                rogue.getHp() < rogue.getMaxHP() / 5){
-            return new DecreaseHPIncreaseStatsStrategy();
-        }
-        if (rogue.getHp() < rogue.getMaxHP() / 7){
-            return new IncreaseHPDecreaseStatsStrategy();
-        }
-        return null;
-    }
-    public Strategy getStrategy(Wizard wizard){
-        if(wizard.getMaxHP() / 4 < wizard.getHp() &&
-                wizard.getHp() < wizard.getMaxHP() / 2){
-            return new DecreaseHPIncreaseStatsStrategy();
-        }
-        if (wizard.getHp() < wizard.getMaxHP() / 4){
-            return new IncreaseHPDecreaseStatsStrategy();
+        if(hero.getClass().equals(Wizard.class)){
+            if(hero.getMaxHP() / 4 < hero.getHp() &&
+                    hero.getHp() < hero.getMaxHP() / 2){
+                return new DecreaseHPIncreaseStatsStrategy();
+            }
+            if (hero.getHp() < hero.getMaxHP() / 4){
+                return new IncreaseHPDecreaseStatsStrategy();
+            }
         }
         return null;
     }

@@ -12,16 +12,16 @@ public class LifeGiverVisitor extends Visitor {
 
     @Override
     public void apply(Knight k) {
-        System.out.println("Knight - Initial HP:" + k.getHp());
+      //  System.out.println("Knight - Initial HP:" + k.getHp());
         k.setHp(k.getHp() + 100);
-        System.out.println("Knght - Final HP:" + k.getHp());
+      //  System.out.println("Knght - Final HP:" + k.getHp());
     }
 
     @Override
     public void apply(Pyromancer p) {
-        System.out.println("Pyro - Initial HP:" + p.getHp());
+       // System.out.println("Pyro - Initial HP:" + p.getHp());
         p.setHp(p.getHp() + 80);
-        System.out.println("Pyro - Initial HP:" + p.getHp());
+       // System.out.println("Pyro - Initial HP:" + p.getHp());
     }
 
     @Override

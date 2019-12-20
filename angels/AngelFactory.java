@@ -5,6 +5,9 @@ public class AngelFactory {
         if(type.equals("LifeGiver")){
             return new LifeGiverVisitor(x, y);
         }
+        if(type.equals("LevelUpAngel")){
+            return new LevelUpAngelVisitor(x, y);
+        }
         return null;
     }
 }

@@ -16,13 +16,6 @@ public final class Pyromancer extends Hero {
     @Override
     public void attack(final Hero hero, final char[][] map) {
 
-        StrategyFactory strategyFactory = new StrategyFactory();
-        this.chosenStrategy = strategyFactory.getStrategy(this);
-        if(this.chosenStrategy != null){
-            this.chosenStrategy.applyStrategy(this);
-        }
-        System.out.println("Pyro extra race modif: " + this.raceModifierChange);
-
         int damageFireblast =
             Constants.FIREBLAST_BASE_DAMAGE + Constants.FIREBLAST_DAMAGE_PER_LEVEL * getLevel();
         int damageIgnite =
@@ -39,8 +32,8 @@ public final class Pyromancer extends Hero {
         if (map[this.getX()][this.getY()] == 'V') {
 
             // set bonus for all abilities including overtime ignite
-            fDamageFireblast = damageFireblast * Constants.PYROMANCER_LAND_MULTIPLIER;
-            fDamageIgnite = damageIgnite * Constants.PYROMANCER_LAND_MULTIPLIER;
+            fDamageFireblast = Math.round(damageFireblast * Constants.PYROMANCER_LAND_MULTIPLIER);
+            fDamageIgnite = Math.round(damageIgnite * Constants.PYROMANCER_LAND_MULTIPLIER);
             dmgPerRound = Math.round(dmgPerRound * Constants.PYROMANCER_LAND_MULTIPLIER);
         }
         // add race multipliers
@@ -87,6 +80,8 @@ public final class Pyromancer extends Hero {
         } else {
             hero.setHp(hero.getHp() - damageFireblast - damageIgnite);
         }
+        System.out.println("Damage Pyro: " + damageFireblast + " " +  damageIgnite);
+
         hero.setWasAttackedThisRound(true);
 
     }

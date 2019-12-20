@@ -3,7 +3,6 @@ package heroes;
 
 import angels.Visitor;
 import main.Constants;
-import strategy.StrategyFactory;
 
 public final class Knight extends Hero {
     Knight(final int x, final int y) {
@@ -16,14 +15,6 @@ public final class Knight extends Hero {
 
     @Override
     public void attack(final Hero hero, final char[][] map) {
-
-        StrategyFactory strategyFactory = new StrategyFactory();
-        this.chosenStrategy = strategyFactory.getStrategy(this);
-        if (this.chosenStrategy != null){
-            this.chosenStrategy.applyStrategy(this);
-        }
-
-        System.out.println("Knight extra race modif:" + this.raceModifierChange);
 
         int executeDamage = Constants.EXECUTE_BASE_DAMAGE
                             + Constants.EXECUTE_DAMAGE_PER_LEVEL * getLevel();
@@ -77,7 +68,7 @@ public final class Knight extends Hero {
                 hero.setHp(hero.getHp() - executeDamage - slamDamage);
             }
         }
-        System.out.println("Damage Knight: " + executeDamage + slamDamage);
+        System.out.println("Damage Knight: " + executeDamage + " " +  slamDamage);
         hero.setWasAttackedThisRound(true);
     }
 

@@ -93,6 +93,14 @@ public abstract class Hero {
         return -1;
     }
 
+    public final void chooseStrategy(){
+        StrategyFactory strategyFactory = new StrategyFactory();
+        this.chosenStrategy = strategyFactory.getStrategy(this);
+        if (this.chosenStrategy != null){
+            this.chosenStrategy.applyStrategy(this);
+        }
+    }
+
     public final void checkIfOpponentKilled(final Hero hero) {
         if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
             this.setXp(this.getXp() + Math.max(0,
