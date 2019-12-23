@@ -3,14 +3,25 @@ package heroes;
 
 import angels.Visitor;
 import main.Constants;
+import strategy.StrategyFactory;
 
 public final class Knight extends Hero {
-    Knight(final int x, final int y) {
-        super(x, y);
+    Knight(final int x, final int y, int id) {
+        super(x, y, id);
         setHp(Constants.KNIGHT_BASE_HP);
         setMaxHP(Constants.KNIGHT_BASE_HP);
         setName('K');
+        this.type = "Knight";
         setHealthPerLevel(Constants.KNIGHT_HP_PER_LEVEL);
+    }
+
+    @Override
+    public void chooseStrategy() {
+        StrategyFactory strategyFactory = new StrategyFactory();
+        this.chosenStrategy = strategyFactory.getStrategy(this);
+        if(this.chosenStrategy != null){
+            this.chosenStrategy.applyStrategy(this);
+        }
     }
 
     @Override
@@ -68,7 +79,6 @@ public final class Knight extends Hero {
                 hero.setHp(hero.getHp() - executeDamage - slamDamage);
             }
         }
-        System.out.println("Damage Knight: " + executeDamage + " " +  slamDamage);
         hero.setWasAttackedThisRound(true);
     }
 

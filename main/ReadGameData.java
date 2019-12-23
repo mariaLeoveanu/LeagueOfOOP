@@ -48,7 +48,7 @@ public final class ReadGameData {
             currentType = fileReader.nextWord();
             x = fileReader.nextInt();
             y = fileReader.nextInt();
-            getHeroes().add(heroFactory.makeNewHero(currentType, x, y));
+            getHeroes().add(heroFactory.makeNewHero(currentType, x, y, i));
         }
 
         setRounds(fileReader.nextInt());

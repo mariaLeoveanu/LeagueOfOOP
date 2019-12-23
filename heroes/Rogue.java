@@ -9,30 +9,31 @@ public class Rogue extends Hero {
     // store the previous land rogue was on
     private char previousLand;
 
-    Rogue(final int x, final int y) {
-        super(x, y);
+    Rogue(final int x, final int y, int id) {
+        super(x, y, id);
         setHp(Constants.ROGUE_BASE_HP);
         setMaxHP(Constants.ROGUE_BASE_HP);
         streak = 0;
         setHealthPerLevel(Constants.ROGUE_HP_PER_LEVEL);
         setName('R');
+        this.type = "Rogue";
         previousLand = 'D';
     }
-
     @Override
-    public final void attack(final Hero hero, final char[][] map) {
-
+    public void chooseStrategy() {
         StrategyFactory strategyFactory = new StrategyFactory();
         this.chosenStrategy = strategyFactory.getStrategy(this);
         if(this.chosenStrategy != null){
             this.chosenStrategy.applyStrategy(this);
         }
+    }
 
+    @Override
+    public final void attack(final Hero hero, final char[][] map) {
         int backstabDamage = Constants.BACKSTAB_BASE_DAMAGE
                 + Constants.BACKSTAB_DAMAGE_PER_LEVEL * getLevel();
         int paralysisDamage = Constants.PARALYSIS_BASE_DAMAGE
                 + Constants.PARALYSIS_DAMAGE_PER_LEVEL * getLevel();
-
         // check for critical bonus
         if (map[this.getX()][this.getY()] == 'W') {
             // if it's for the first time on woods, after a different
@@ -57,14 +58,14 @@ public class Rogue extends Hero {
             hero.setParalysed(Constants.ROGUE_PARALYSIS_MIN_ROUNDS);
         } else {
             hero.setParalysed(Constants.ROGUE_PARALYSIS_MAX_ROUNDS);
-            backstabDamage = Math.round(backstabDamage * (Constants.ROGUE_LAND_MULTIPLIER + this.raceModifierChange));
-            paralysisDamage = Math.round(paralysisDamage * (Constants.ROGUE_LAND_MULTIPLIER + this.raceModifierChange));
+            backstabDamage = Math.round(backstabDamage * Constants.ROGUE_LAND_MULTIPLIER);
+            paralysisDamage = Math.round(paralysisDamage * Constants.ROGUE_LAND_MULTIPLIER);
         }
 
         // add race bonus
         if (Rogue.class.equals(hero.getClass())) {
             backstabDamage = Math.round(backstabDamage * (Constants.BACKSTAB_ROGUE_MULTIPLIER + this.raceModifierChange));
-            paralysisDamage = Math.round(paralysisDamage * Constants.PRALYSIS_ROGUE_MULTIPLIER);
+            paralysisDamage = Math.round(paralysisDamage * (Constants.PRALYSIS_ROGUE_MULTIPLIER+ this.raceModifierChange));
         }
         if (Knight.class.equals(hero.getClass())) {
             backstabDamage = Math.round(backstabDamage * (Constants.BACKSTAB_KNIGHT_MULTIPLIER + this.raceModifierChange));

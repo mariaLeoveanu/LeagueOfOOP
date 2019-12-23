@@ -22,12 +22,14 @@ public abstract class Hero {
     private int paralysed;
     private boolean wasAttackedThisRound;
     private char name;
+    public String type;
     private OvertimeInfo otDmg;
     private int healthPerLevel;
     public float raceModifierChange;
     Strategy chosenStrategy;
+    public int id;
 
-    Hero(final int x, final int y) {
+    Hero(final int x, final int y, int id) {
         setX(x);
         setY(y);
         setParalysed(0);
@@ -37,6 +39,7 @@ public abstract class Hero {
         setDamageWoRaceModif(0);
         setOtDmg(new OvertimeInfo(0, 0));
         raceModifierChange = 0;
+        this.id = id;
     }
 
     public final void checkOtDmg() {
@@ -49,6 +52,8 @@ public abstract class Hero {
             }
         }
     }
+
+    public abstract void chooseStrategy();
 
     public final void move(final char c) {
         if (this.getHp() > 0 && getParalysed() <= 0) {
@@ -93,19 +98,12 @@ public abstract class Hero {
         return -1;
     }
 
-    public final void chooseStrategy(){
-        StrategyFactory strategyFactory = new StrategyFactory();
-        this.chosenStrategy = strategyFactory.getStrategy(this);
-        if (this.chosenStrategy != null){
-            this.chosenStrategy.applyStrategy(this);
-        }
-    }
-
     public final void checkIfOpponentKilled(final Hero hero) {
         if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
             this.setXp(this.getXp() + Math.max(0,
                     Constants.XP_FORMULA_MINUEND
                     - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
+            Visitor.magician.updateHeroKilled(this, hero, this.id, hero.id);
         }
     }
 
@@ -120,8 +118,9 @@ public abstract class Hero {
             this.setLevel((this.getXp() - Constants.BASE_XP) / Constants.XP_PER_LEVEL + 1);
             // if there actually was a level up, modify hp stats
             if (this.getLevel() != previousLevel) {
-                this.setMaxHP(this.getMaxHP() + this.getLevel() * this.getHealthPerLevel());
+                this.setMaxHP(this.getMaxHP() + (this.getLevel() - previousLevel) * this.getHealthPerLevel());
                 this.setHp(this.getMaxHP());
+                System.out.println("Current MAX HP: " + this.getMaxHP());
             }
         }
     }

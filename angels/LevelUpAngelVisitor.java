@@ -22,23 +22,23 @@ public class LevelUpAngelVisitor extends Visitor {
     @Override
     public void apply(Pyromancer p) {
        p.setXp(250 + p.getLevel() * 50);
-        p.tryLevelUp();
-        p.raceModifierChange += 0.2f;
+       p.tryLevelUp();
+       p.raceModifierChange += 0.2f;
     }
 
     @Override
     public void apply(Wizard w) {
-
+        w.setXp(250 + w.getLevel() * 50);
+        w.tryLevelUp();
+        w.raceModifierChange += 0.25f;
     }
 
     @Override
     public void apply(Rogue r) {
-
+        r.setXp(250 + r.getLevel() * 50);
+        r.tryLevelUp();
+        r.raceModifierChange += 0.15f;
     }
 
-    @Override
-    public void update(char playerType, int playerID) {
-        System.out.println(this.name + " " + this.actionType + " " + playerType + " " + playerID);
 
-    }
 }

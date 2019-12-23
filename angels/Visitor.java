@@ -1,25 +1,30 @@
 package angels;
 
 import heroes.*;
+import main.Magician;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 public abstract class Visitor {
-    int x;
-    int y;
-    String name;
-    String actionType;
+    public int x;
+    public int y;
+    public String name;
+    public String actionType;
+    public static Magician magician;
     Visitor(int x, int y){
         this.x = x;
         this.y = y;
+        magician = new Magician();
     }
     public abstract void apply(Knight k);
     public abstract void apply(Pyromancer p);
     public abstract void apply(Wizard w);
     public abstract void apply(Rogue r);
 
-    public abstract void update(char playerType, int playerID);
+    public void spawn(){
+        Visitor.magician.updateSpawn(this);
+    }
+
     public ArrayList<Integer> checkForHeroes(ArrayList<Hero> heroes){
         ArrayList<Integer> neighbours = new ArrayList<>();
         for (int i = 0; i < heroes.size(); i++){

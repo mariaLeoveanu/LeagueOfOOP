@@ -5,24 +5,34 @@ import main.Constants;
 import strategy.StrategyFactory;
 
 public final class Pyromancer extends Hero {
-    Pyromancer(final int x, final int y) {
-        super(x, y);
+    Pyromancer(final int x, final int y, int id) {
+        super(x, y, id);
         setHp(Constants.PYROMANCER_BASE_HP);
         setMaxHP(Constants.PYROMANCER_BASE_HP);
         setName('P');
+        this.type = "Pyromancer";
         setHealthPerLevel(Constants.PYROMANCER_HP_PER_LEVEL);
+    }
+
+    @Override
+    public void chooseStrategy() {
+        StrategyFactory strategyFactory = new StrategyFactory();
+        this.chosenStrategy = strategyFactory.getStrategy(this);
+        if (this.chosenStrategy != null) {
+            this.chosenStrategy.applyStrategy(this);
+        }
     }
 
     @Override
     public void attack(final Hero hero, final char[][] map) {
 
         int damageFireblast =
-            Constants.FIREBLAST_BASE_DAMAGE + Constants.FIREBLAST_DAMAGE_PER_LEVEL * getLevel();
+                Constants.FIREBLAST_BASE_DAMAGE + Constants.FIREBLAST_DAMAGE_PER_LEVEL * getLevel();
         int damageIgnite =
-            Constants.IGNITE_BASE_DAMAGE + Constants.IGNITE_DAMAGE_PER_LEVEL * getLevel();
+                Constants.IGNITE_BASE_DAMAGE + Constants.IGNITE_DAMAGE_PER_LEVEL * getLevel();
         int dmgPerRound =
-            Constants.IGNITE_DAMAGE_OVERTIME
-                    + Constants.IGNITE_DAMAGE_OVERTIME_PER_LEVEL * getLevel();
+                Constants.IGNITE_DAMAGE_OVERTIME
+                        + Constants.IGNITE_DAMAGE_OVERTIME_PER_LEVEL * getLevel();
 
         //float variables to store the damage without race modifiers
         float fDamageFireblast = damageFireblast;
@@ -39,37 +49,37 @@ public final class Pyromancer extends Hero {
         // add race multipliers
         if (Rogue.class.equals(hero.getClass())) {
             damageFireblast =
-                 Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_ROGUE_MULTIPLIER + this.raceModifierChange));
+                    Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_ROGUE_MULTIPLIER + this.raceModifierChange));
             damageIgnite =
-                 Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_ROGUE_MULTIPLIER + this.raceModifierChange));
+                    Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_ROGUE_MULTIPLIER + this.raceModifierChange));
             dmgPerRound =
-                 Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_ROGUE_MULTIPLIER + this.raceModifierChange));
+                    Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_ROGUE_MULTIPLIER + this.raceModifierChange));
         }
         if (Knight.class.equals(hero.getClass())) {
             damageFireblast =
                     Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_KNIGHT_MULTIPLIER + this.raceModifierChange));
             damageIgnite =
-                    Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_KNIGHT_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_KNIGHT_MULTIPLIER + this.raceModifierChange));
             dmgPerRound =
-                    Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_KNIGHT_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_KNIGHT_MULTIPLIER + this.raceModifierChange));
         }
         if (Pyromancer.class.equals(hero.getClass())) {
             damageFireblast =
-                 Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_PYROMANCER_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_PYROMANCER_MULTIPLIER + this.raceModifierChange));
             damageIgnite =
-                 Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_PYROMANCER_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_PYROMANCER_MULTIPLIER + this.raceModifierChange));
             dmgPerRound =
-                 Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_PYROMANCER_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_PYROMANCER_MULTIPLIER + this.raceModifierChange));
         }
         if (Wizard.class.equals(hero.getClass())) {
             //if hero is wizard, save the damage without race modifier
             setDamageWoRaceModif(Math.round(fDamageFireblast + fDamageIgnite));
             damageFireblast =
-                    Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_WIZARD_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(fDamageFireblast * (Constants.PYROMANCER_ABILITY_WIZARD_MULTIPLIER + this.raceModifierChange));
             damageIgnite =
-                    Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_WIZARD_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(fDamageIgnite * (Constants.PYROMANCER_ABILITY_WIZARD_MULTIPLIER + this.raceModifierChange));
             dmgPerRound =
-                    Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_WIZARD_MULTIPLIER+ this.raceModifierChange));
+                    Math.round(dmgPerRound * (Constants.PYROMANCER_ABILITY_WIZARD_MULTIPLIER + this.raceModifierChange));
         }
         // set overtime info
         hero.getOtDmg().setNumRounds(2);
@@ -80,7 +90,6 @@ public final class Pyromancer extends Hero {
         } else {
             hero.setHp(hero.getHp() - damageFireblast - damageIgnite);
         }
-        System.out.println("Damage Pyro: " + damageFireblast + " " +  damageIgnite);
 
         hero.setWasAttackedThisRound(true);
 

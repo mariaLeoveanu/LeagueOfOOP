@@ -21,6 +21,7 @@ final class GameProcess {
         for (int i = 0; i < readGameData.getRounds(); i++) {
 
             //all players check if they have any overtime damage
+            System.out.println("~~~~~~~~RUNDA " + (i + 1) +"~~~~~~");
             for (int j = 0; j < readGameData.getPlayers(); j++) {
                 heroes.get(j).checkOtDmg();
                 heroes.get(j).chooseStrategy();
@@ -62,12 +63,12 @@ final class GameProcess {
             // angels spawn
 
             for (int j = 0; j < readGameData.angels.get(i).size(); j++){
+                readGameData.angels.get(i).get(j).spawn();
                 ArrayList<Integer> neighbours = new ArrayList<>();
                 neighbours = readGameData.angels.get(i).get(j).checkForHeroes(heroes);
                 if (neighbours != null && neighbours.size() > 0){
                     for (Integer neighbour : neighbours) {
                         heroes.get(neighbour).accept(readGameData.angels.get(i).get(j));
-                        readGameData.angels.get(i).get(j).update(heroes.get(neighbour).getName(), neighbour);
                     }
                 }
             }

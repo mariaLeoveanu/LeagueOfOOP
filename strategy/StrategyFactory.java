@@ -4,6 +4,9 @@ import heroes.*;
 
 public class StrategyFactory {
     public Strategy getStrategy(Hero hero){
+        if(hero.getParalysed() > 0){
+            return null;
+        }
         if (hero.getClass().equals(Knight.class)) {
             if (hero.getMaxHP() / 3 < hero.getHp() &&
                     hero.getHp() < (hero.getMaxHP() / 2)) {
@@ -20,7 +23,6 @@ public class StrategyFactory {
                 return new DecreaseHPIncreaseStatsStrategy();
             }
             if (hero.getHp() < hero.getMaxHP() / 4){
-                System.out.println(hero.getMaxHP()/4 + " < " + hero.getHp() + " < " + hero.getHp()/3 );
                 return new IncreaseHPDecreaseStatsStrategy();
             }
         }

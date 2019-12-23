@@ -37,10 +37,7 @@ public class LifeGiverVisitor extends Visitor  {
         r.setHp(r.getHp() + 90);
     }
 
-    @Override
-    public void update(char playerType, int playerID) {
-        System.out.println(this.name + " " + this.actionType + " " + playerType + " " + playerID);
-    }
+
 
 
 }
