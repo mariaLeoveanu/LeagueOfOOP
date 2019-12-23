@@ -1,8 +1,11 @@
 package heroes;
 
 import angels.Visitor;
+import fileio.implementations.FileWriter;
 import main.Constants;
 import strategy.StrategyFactory;
+
+import java.io.IOException;
 
 public class Rogue extends Hero {
     private int streak;
@@ -52,6 +55,7 @@ public class Rogue extends Hero {
             }
         }
 
+
         if (map[this.getX()][this.getY()] != 'W') {
             // when not in woods. streak stays 0
             streak = 0;
@@ -92,13 +96,12 @@ public class Rogue extends Hero {
         } else {
             hero.setHp(hero.getHp() - backstabDamage - paralysisDamage);
         }
-
         hero.setWasAttackedThisRound(true);
         previousLand = map[this.getX()][this.getY()];
     }
 
     @Override
-    public void accept(Visitor v) {
-        v.apply(this);
+    public void accept(Visitor v, FileWriter fileWriter) throws IOException {
+        v.apply(this, fileWriter);
     }
 }

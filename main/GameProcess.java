@@ -1,8 +1,10 @@
 package main;
 
+import fileio.implementations.FileWriter;
 import heroes.Hero;
 import heroes.Wizard;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 final class GameProcess {
@@ -11,7 +13,8 @@ final class GameProcess {
         readGameData = r;
     }
 
-    void startGame() {
+    void startGame(FileWriter printData) throws IOException {
+
         ArrayList<Hero> heroes = readGameData.getHeroes();
 
         //wizard list used to store all wizards that have to attack their opponents
@@ -21,7 +24,8 @@ final class GameProcess {
         for (int i = 0; i < readGameData.getRounds(); i++) {
 
             //all players check if they have any overtime damage
-            System.out.println("~~~~~~~~RUNDA " + (i + 1) +"~~~~~~");
+            printData.writeWord("~~RUNDA " + (i + 1) +"~~");
+            printData.writeNewLine();
             for (int j = 0; j < readGameData.getPlayers(); j++) {
                 heroes.get(j).checkOtDmg();
                 heroes.get(j).chooseStrategy();
@@ -68,7 +72,7 @@ final class GameProcess {
                 neighbours = readGameData.angels.get(i).get(j).checkForHeroes(heroes);
                 if (neighbours != null && neighbours.size() > 0){
                     for (Integer neighbour : neighbours) {
-                        heroes.get(neighbour).accept(readGameData.angels.get(i).get(j));
+                        heroes.get(neighbour).accept(readGameData.angels.get(i).get(j), printData);
                     }
                 }
             }

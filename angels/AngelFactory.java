@@ -1,7 +1,9 @@
 package angels;
 
+import java.io.IOException;
+
 public class AngelFactory {
-    public Visitor getAngelVisitor(String type, int x, int y){
+    public Visitor getAngelVisitor(String type, int x, int y) throws IOException {
         if(type.equals("LifeGiver")){
             return new LifeGiverVisitor(x, y);
         }

@@ -1,9 +1,12 @@
 package heroes;
 
 import angels.Visitor;
+import fileio.implementations.FileWriter;
 import main.Constants;
 import strategy.Strategy;
 import strategy.StrategyFactory;
+
+import java.io.IOException;
 
 public class Wizard extends Hero {
     Wizard(final int x, final int y, int id) {
@@ -72,7 +75,7 @@ public class Wizard extends Hero {
     }
 
     @Override
-    public void accept(Visitor v) {
-        v.apply(this);
+    public void accept(Visitor v, FileWriter fileWriter) throws IOException {
+        v.apply(this, fileWriter);
     }
 }

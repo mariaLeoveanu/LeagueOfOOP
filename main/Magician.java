@@ -1,11 +1,20 @@
 package main;
 
 import angels.Visitor;
+import fileio.implementations.FileWriter;
 import heroes.Hero;
 
+import java.io.IOException;
+
 public class Magician {
-    public void updateAction(Visitor angel, Hero hero , int idHero){
-        System.out.println(angel.name + " " + angel.actionType + " " + hero.type + " " + idHero);
+
+    public Magician() throws IOException {
+    }
+
+
+    public void updateAction(Visitor angel, Hero hero , int idHero, FileWriter fileWriter) throws IOException {
+       fileWriter.writeWord(angel.name + " " + angel.actionType + " " + hero.type + " " + idHero);
+       fileWriter.writeNewLine();
     }
 
     public void updateSpawn(Visitor angel){

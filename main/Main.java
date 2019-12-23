@@ -14,7 +14,7 @@ public final class Main {
 
         readGameData.readData();
 
-        gameProcess.startGame();
+        gameProcess.startGame(printData);
 
         printGameData.printData(readGameData.getHeroes(), printData);
 

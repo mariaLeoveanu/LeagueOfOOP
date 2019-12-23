@@ -1,8 +1,11 @@
 package heroes;
 
 import angels.Visitor;
+import fileio.implementations.FileWriter;
 import main.Constants;
 import strategy.StrategyFactory;
+
+import java.io.IOException;
 
 public final class Pyromancer extends Hero {
     Pyromancer(final int x, final int y, int id) {
@@ -96,8 +99,8 @@ public final class Pyromancer extends Hero {
     }
 
     @Override
-    public void accept(Visitor v) {
-        v.apply(this);
+    public void accept(Visitor v, FileWriter fileWriter) throws IOException {
+        v.apply(this, fileWriter);
     }
 
 }

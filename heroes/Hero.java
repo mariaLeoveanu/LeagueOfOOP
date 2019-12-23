@@ -1,11 +1,13 @@
 package heroes;
 
 import angels.Visitor;
+import fileio.implementations.FileWriter;
 import main.Constants;
+import main.Magician;
 import main.OvertimeInfo;
 import strategy.Strategy;
-import strategy.StrategyFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Hero {
@@ -98,12 +100,13 @@ public abstract class Hero {
         return -1;
     }
 
-    public final void checkIfOpponentKilled(final Hero hero) {
+    public final void checkIfOpponentKilled(final Hero hero) throws IOException {
+        Magician magician = new Magician();
         if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
             this.setXp(this.getXp() + Math.max(0,
                     Constants.XP_FORMULA_MINUEND
                     - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
-            Visitor.magician.updateHeroKilled(this, hero, this.id, hero.id);
+            magician.updateHeroKilled(this, hero, this.id, hero.id);
         }
     }
 
@@ -126,7 +129,7 @@ public abstract class Hero {
     }
 
     public abstract void attack(Hero hero, char[][] map);
-    public abstract void accept(Visitor v);
+    public abstract void accept(Visitor v, FileWriter fileWriter) throws IOException;
 
     public final int getX() {
         return x;

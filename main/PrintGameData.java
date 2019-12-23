@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class PrintGameData {
+
     void printData(final ArrayList<Hero> heroes, final FileWriter printData) throws IOException {
         for (Hero hero : heroes) {
             if (hero.getHp() == 0) {
