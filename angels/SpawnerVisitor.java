@@ -18,6 +18,8 @@ public class SpawnerVisitor extends Visitor {
             k.setHp(200);
             k.setXp(0);
             k.setLevel(0);
+            Visitor.magician.updateAction(this, k, k.id);
+            Visitor.magician.updateRespawn(k);
         }
     }
 
@@ -27,6 +29,8 @@ public class SpawnerVisitor extends Visitor {
             p.setHp(150);
             p.setXp(0);
             p.setLevel(0);
+            Visitor.magician.updateAction(this, p, p.id);
+            Visitor.magician.updateRespawn(p);
         }
     }
 
@@ -36,6 +40,8 @@ public class SpawnerVisitor extends Visitor {
             w.setHp(120);
             w.setXp(0);
             w.setLevel(0);
+            Visitor.magician.updateAction(this, w, w.id);
+            Visitor.magician.updateRespawn(w);
         }
     }
 
@@ -45,6 +51,8 @@ public class SpawnerVisitor extends Visitor {
             r.setHp(180);
             r.setXp(0);
             r.setLevel(0);
+            Visitor.magician.updateAction(this, r, r.id);
+            Visitor.magician.updateRespawn(r);
         }
     }
 

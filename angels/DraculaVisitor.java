@@ -12,33 +12,55 @@ public class DraculaVisitor extends Visitor {
         this.name = "Dracula";
     }
 
-    //todo: de verificat daca mor sa
-    // afisez ca eroul a fost omorat de inger
-
     @Override
     public void apply(Knight k) {
-        k.raceModifierChange += -0.2f;
-        k.setHp(k.getHp() - 60);
+        if(k.getHp() > 0){
+            k.raceModifierChange += -0.2f;
+            k.setHp(Math.max(0, k.getHp() - 60));
+            Visitor.magician.updateAction(this, k, k.id);
+            if(k.getHp() == 0){
+                Visitor.magician.updateAngelKilled(k, k.id);
+            }
+        }
+
     }
 
     @Override
     public void apply(Pyromancer p) {
-        p.raceModifierChange += -0.3f;
-        p.setHp(p.getHp() - 40);
+        if(p.getHp() > 0){
+            p.raceModifierChange += -0.3f;
+            p.setHp(p.getHp() - 40);
+            Visitor.magician.updateAction(this, p, p.id);
+            if(p.getHp() == 0){
+                Visitor.magician.updateAngelKilled(p, p.id);
+            }
+        }
+
     }
 
     @Override
     public void apply(Wizard w) {
-        w.raceModifierChange += -0.4f;
-        w.setHp(w.getHp() - 20);
+        if(w.getHp() > 0){
+            w.raceModifierChange += -0.4f;
+            w.setHp(w.getHp() - 20);
+            Visitor.magician.updateAction(this, w, w.id);
+            if(w.getHp() == 0){
+                Visitor.magician.updateAngelKilled(w, w.id);
+            }
+        }
+
     }
 
     @Override
     public void apply(Rogue r) {
-        System.out.println("Rogue: " + r.getHp());
-        r.raceModifierChange += -0.1f;
-        r.setHp(r.getHp() - 35);
-        System.out.println("Rogue: " + r.getHp());
+        if(r.getHp() > 0){
+            r.raceModifierChange += -0.1f;
+            r.setHp(r.getHp() - 35);
+            Visitor.magician.updateAction(this, r, r.id);
+            if(r.getHp() == 0){
+                Visitor.magician.updateAngelKilled(r, r.id);
+            }
+        }
     }
 
 }

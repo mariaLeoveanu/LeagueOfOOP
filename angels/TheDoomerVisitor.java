@@ -14,22 +14,42 @@ public class TheDoomerVisitor extends Visitor {
 
     @Override
     public void apply(Knight k) {
-        k.setHp(0);
+        if(k.getHp() > 0){
+            k.setHp(0);
+            Visitor.magician.updateAction(this, k, k.id);
+            Visitor.magician.updateAngelKilled(k, k.id);
+        }
+
     }
 
     @Override
     public void apply(Pyromancer p) {
-        p.setHp(0);
+        if(p.getHp() > 0){
+            p.setHp(0);
+            Visitor.magician.updateAction(this, p, p.id);
+            Visitor.magician.updateAngelKilled(p, p.id);
+        }
+
     }
 
     @Override
     public void apply(Wizard w) {
-        w.setHp(0);
+        if(w.getHp() > 0){
+            w.setHp(0);
+            Visitor.magician.updateAction(this, w, w.id);
+            Visitor.magician.updateAngelKilled(w, w.id);
+        }
+
     }
 
     @Override
     public void apply(Rogue r) {
-        r.setHp(0);
+        if(r.getHp() > 0){
+            r.setHp(0);
+            Visitor.magician.updateAction(this, r, r.id);
+            Visitor.magician.updateAngelKilled(r, r.id);
+        }
+
     }
 
 

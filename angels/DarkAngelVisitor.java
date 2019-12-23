@@ -12,10 +12,8 @@ public class DarkAngelVisitor extends Visitor {
         this.name = "DarkAngel";
     }
 
-
-    //todo: sa verific daca au hp 0 sa
-    // afisez player x was killed by an angel si sa resetez hpul la 0
-
+    //TODO: verific daca moare
+    //TODO: inlocuiesc if(){..} cu Math.max(0, hp-delta)
 
     @Override
     public void apply(Knight k) {

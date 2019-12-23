@@ -120,7 +120,7 @@ public abstract class Hero {
             if (this.getLevel() != previousLevel) {
                 this.setMaxHP(this.getMaxHP() + (this.getLevel() - previousLevel) * this.getHealthPerLevel());
                 this.setHp(this.getMaxHP());
-                System.out.println("Current MAX HP: " + this.getMaxHP());
+                Visitor.magician.updateLevelUp(this);
             }
         }
     }

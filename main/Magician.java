@@ -17,6 +17,13 @@ public class Magician {
     }
 
     public void updateAngelKilled(Hero killed, int idKilled){
+        System.out.println("Player " + killed.type + " " + killed.id + " was killed by an angel");
+    }
+    public void updateLevelUp(Hero hero){
+        System.out.println(hero.type + " " + hero.id + " reached level " + hero.getLevel());
+    }
 
+    public void updateRespawn(Hero hero){
+        System.out.println("Player " + hero.type + " " + hero.id + " was brought back to life by an angel");
     }
 }

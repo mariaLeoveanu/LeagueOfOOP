@@ -14,26 +14,39 @@ public class SmallAngelVisitor extends Visitor {
 
     @Override
     public void apply(Knight k) {
-        k.raceModifierChange += 0.1f;
-        k.setHp(k.getHp() + 10);
+        if (k.getMaxHP() > 0){
+            k.raceModifierChange += 0.1f;
+            k.setHp(Math.min(k.getMaxHP(), k.getHp() + 10));
+            Visitor.magician.updateAction(this, k, k.id);
+        }
+
     }
 
     @Override
     public void apply(Pyromancer p) {
-        p.raceModifierChange += 0.15f;
-        p.setHp(p.getHp() + 15);
+        if (p.getMaxHP() > 0){
+            p.raceModifierChange += 0.15f;
+            p.setHp(Math.min(p.getMaxHP(), p.getHp() + 15));
+            Visitor.magician.updateAction(this, p, p.id);
+        }
     }
 
     @Override
     public void apply(Wizard w) {
-        w.raceModifierChange +=0.1f;
-        w.setHp(w.getHp() + 25);
+        if (w.getMaxHP() > 0){
+            w.raceModifierChange +=0.1f;
+            w.setHp(Math.min(w.getMaxHP(), w.getHp() + 25));
+            Visitor.magician.updateAction(this, w, w.id);
+        }
     }
 
     @Override
     public void apply(Rogue r) {
-        r.raceModifierChange += 0.05f;
-        r.setHp(r.getHp() + 20);
+        if (r.getMaxHP() > 0){
+            r.raceModifierChange += 0.05f;
+            r.setHp(Math.min(r.getMaxHP(), r.getHp() + 20));
+            Visitor.magician.updateAction(this, r, r.id);
+        }
     }
 
 

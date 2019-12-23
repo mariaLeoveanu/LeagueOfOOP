@@ -12,29 +12,37 @@ public class LifeGiverVisitor extends Visitor  {
         actionType = "helped";
     }
 
-
     @Override
     public void apply(Knight k) {
-      //  System.out.println("Knight - Initial HP:" + k.getHp());
-        k.setHp(k.getHp() + 100);
-      //  System.out.println("Knght - Final HP:" + k.getHp());
+        if (k.getHp() > 0){
+            k.setHp(Math.min(k.getMaxHP(), k.getHp() + 100));
+            Visitor.magician.updateAction(this, k, k.id);
+        }
+
     }
 
     @Override
     public void apply(Pyromancer p) {
-       // System.out.println("Pyro - Initial HP:" + p.getHp());
-        p.setHp(p.getHp() + 80);
-       // System.out.println("Pyro - Initial HP:" + p.getHp());
+        if (p.getHp() > 0){
+            p.setHp(Math.min(p.getMaxHP(), p.getHp() + 80));
+            Visitor.magician.updateAction(this, p, p.id);
+        }
     }
 
     @Override
     public void apply(Wizard w) {
-        w.setHp(w.getHp() + 120);
+        if (w.getHp() > 0){
+            w.setHp(Math.min(w.getMaxHP(), w.getHp() + 120));
+            Visitor.magician.updateAction(this, w, w.id);
+        }
     }
 
     @Override
     public void apply(Rogue r) {
-        r.setHp(r.getHp() + 90);
+        if (r.getHp() > 0){
+            r.setHp(Math.min(r.getMaxHP(), r.getHp() + 90));
+            Visitor.magician.updateAction(this, r, r.id);
+        }
     }
 
 
