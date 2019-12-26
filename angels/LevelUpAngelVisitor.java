@@ -19,7 +19,7 @@ public class LevelUpAngelVisitor extends Visitor {
     public void apply(Knight k, FileWriter fileWriter) throws IOException {
         if (k.getHp() > 0){
             Visitor.magician.updateAction(this, k, k.id, fileWriter);
-            k.setXp(250 + k.getLevel() * 50 - k.getXp());
+            k.setXp(250 + k.getLevel() * 50);
             k.tryLevelUp(fileWriter);
             k.raceModifierChange += 0.1f;
         }

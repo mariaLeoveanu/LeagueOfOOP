@@ -30,6 +30,7 @@ public abstract class Hero {
     public float raceModifierChange;
     Strategy chosenStrategy;
     public int id;
+    public int initialXP;
 
     Hero(final int x, final int y, int id) {
         setX(x);
@@ -90,10 +91,10 @@ public abstract class Hero {
         }
         for (int i = 0; i < allPlayers.size(); i++) {
             if (i != playerID
-                && this.getX() == allPlayers.get(i).getX()
-                && this.getY() == allPlayers.get(i).getY()
-                && allPlayers.get(i).getHp() > 0
-                && !allPlayers.get(i).isWasAttackedThisRound()) {
+                    && this.getX() == allPlayers.get(i).getX()
+                    && this.getY() == allPlayers.get(i).getY()
+                    && allPlayers.get(i).getHp() > 0
+                    && !allPlayers.get(i).isWasAttackedThisRound()) {
                 return i;
             }
         }
@@ -105,7 +106,7 @@ public abstract class Hero {
         if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
             this.setXp(this.getXp() + Math.max(0,
                     Constants.XP_FORMULA_MINUEND
-                    - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
+                            - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
             magician.updateHeroKilled(this, hero, this.id, hero.id, fileWriter);
         }
     }
@@ -123,6 +124,12 @@ public abstract class Hero {
             if (this.getLevel() != previousLevel) {
                 this.setMaxHP(this.getMaxHP() + (this.getLevel() - previousLevel) * this.getHealthPerLevel());
                 this.setHp(this.getMaxHP());
+                if(this.getLevel() - previousLevel > 1){
+                    for(int i = previousLevel + 1; i <= this.getLevel() - 1; i++){
+                        fileWriter.writeWord(this.type + " " + this.id + " reached level " + i);
+                        fileWriter.writeNewLine();
+                    }
+                }
                 Visitor.magician.updateLevelUp(this,fileWriter);
             }
         }

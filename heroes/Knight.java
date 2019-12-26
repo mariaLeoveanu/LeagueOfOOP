@@ -45,17 +45,14 @@ public final class Knight extends Hero {
         if (hero.getHp() < hpLimit) {
             executeDamage = hero.getHp();
             hero.setHp(0);
-            // if the opponent is a wizard, set the damage for deflect ability
-            if (Wizard.class.equals(hero.getClass())) {
-                setDamageWoRaceModif(executeDamage + slamDamage);
-            }
         } else {
+            setDamageWoRaceModif(executeDamage + slamDamage);
             if (Rogue.class.equals(hero.getClass())) {
                 executeDamage = Math.round(executeDamage * (Constants.EXECUTE_ROGUE_MULTIPLIER + this.raceModifierChange));
                 slamDamage = Math.round(slamDamage * (Constants.SLAM_ROGUE_MULTIPLIER + this.raceModifierChange));
             }
             if (Knight.class.equals(hero.getClass())) {
-                executeDamage = Math.round(executeDamage * (1 + this.raceModifierChange));
+                executeDamage = Math.round(executeDamage);
                 slamDamage = Math.round(slamDamage * (Constants.SLAM_KNIGHT_MULTIPLIER + this.raceModifierChange));
             }
             if (Pyromancer.class.equals(hero.getClass())) {

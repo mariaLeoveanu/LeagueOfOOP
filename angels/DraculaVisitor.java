@@ -32,7 +32,7 @@ public class DraculaVisitor extends Visitor {
     public void apply(Pyromancer p, FileWriter fileWriter) throws IOException {
         if(p.getHp() > 0){
             p.raceModifierChange += -0.3f;
-            p.setHp(p.getHp() - 40);
+            p.setHp(Math.max(0, p.getHp() - 40));
             Visitor.magician.updateAction(this, p, p.id, fileWriter);
             if(p.getHp() == 0){
                 Visitor.magician.updateAngelKilled(p, p.id, fileWriter);
@@ -45,7 +45,7 @@ public class DraculaVisitor extends Visitor {
     public void apply(Wizard w, FileWriter fileWriter) throws IOException {
         if(w.getHp() > 0){
             w.raceModifierChange += -0.4f;
-            w.setHp(w.getHp() - 20);
+            w.setHp(Math.max(w.getHp() - 20, 0));
             Visitor.magician.updateAction(this, w, w.id, fileWriter);
             if(w.getHp() == 0){
                 Visitor.magician.updateAngelKilled(w, w.id, fileWriter);
@@ -58,7 +58,7 @@ public class DraculaVisitor extends Visitor {
     public void apply(Rogue r, FileWriter fileWriter) throws IOException {
         if(r.getHp() > 0){
             r.raceModifierChange += -0.1f;
-            r.setHp(r.getHp() - 35);
+            r.setHp(Math.max(r.getHp() - 35, 0));
             Visitor.magician.updateAction(this, r, r.id, fileWriter);
             if(r.getHp() == 0){
                 Visitor.magician.updateAngelKilled(r, r.id, fileWriter);

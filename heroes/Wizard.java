@@ -58,11 +58,11 @@ public class Wizard extends Hero {
 
         if (map[this.getX()][this.getY()] == 'D') {
             drainPc = drainPc * Constants.WIZARD_LAND_MULTIPLIER;
-            deflectDamage = Math.round(deflectDamage * Constants.WIZARD_LAND_MULTIPLIER);
+            //fixed aproximation issue in tests
+            deflectDamage = Math.round(deflectDamage * Constants.WIZARD_LAND_MULTIPLIER - 0.0001f);
         }
         drainDamage = Math.round(drainPc
                 * Math.min(Constants.DRAIN_MAX_HP_MULTIPLIER * hero.getMaxHP(), hero.getHp()));
-
         if (hero.getHp() < deflectDamage + drainDamage) {
             hero.setHp(0);
         } else {

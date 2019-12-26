@@ -23,6 +23,9 @@ final class GameProcess {
         ArrayList<WizardOpponentPair> wizards = new ArrayList<>();
 
         for (int i = 0; i < readGameData.getRounds(); i++) {
+            for (int j = 0; j < heroes.size(); j++){
+                heroes.get(j).initialXP = heroes.get(j).getXp();
+            }
 
             //all players check if they have any overtime damage
             printData.writeWord("~~ Round " + (i + 1) + " ~~");
@@ -64,6 +67,7 @@ final class GameProcess {
 
             wizards.clear();
 
+
             // angels spawn
 
             for (int j = 0; j < readGameData.angels.get(i).size(); j++) {
@@ -76,6 +80,9 @@ final class GameProcess {
                     }
                 }
             }
+
+
+
             printData.writeNewLine();
         }
     }
