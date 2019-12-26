@@ -22,7 +22,7 @@ public class DraculaVisitor extends Visitor {
             k.setHp(Math.max(0, k.getHp() - 60));
             Visitor.magician.updateAction(this, k, k.id, fileWriter);
             if(k.getHp() == 0){
-                Visitor.magician.updateAngelKilled(k, k.id);
+                Visitor.magician.updateAngelKilled(k, k.id, fileWriter);
             }
         }
 
@@ -35,7 +35,7 @@ public class DraculaVisitor extends Visitor {
             p.setHp(p.getHp() - 40);
             Visitor.magician.updateAction(this, p, p.id, fileWriter);
             if(p.getHp() == 0){
-                Visitor.magician.updateAngelKilled(p, p.id);
+                Visitor.magician.updateAngelKilled(p, p.id, fileWriter);
             }
         }
 
@@ -48,7 +48,7 @@ public class DraculaVisitor extends Visitor {
             w.setHp(w.getHp() - 20);
             Visitor.magician.updateAction(this, w, w.id, fileWriter);
             if(w.getHp() == 0){
-                Visitor.magician.updateAngelKilled(w, w.id);
+                Visitor.magician.updateAngelKilled(w, w.id, fileWriter);
             }
         }
 
@@ -61,7 +61,7 @@ public class DraculaVisitor extends Visitor {
             r.setHp(r.getHp() - 35);
             Visitor.magician.updateAction(this, r, r.id, fileWriter);
             if(r.getHp() == 0){
-                Visitor.magician.updateAngelKilled(r, r.id);
+                Visitor.magician.updateAngelKilled(r, r.id, fileWriter);
             }
         }
     }

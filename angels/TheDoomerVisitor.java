@@ -20,7 +20,7 @@ public class TheDoomerVisitor extends Visitor {
         if(k.getHp() > 0){
             k.setHp(0);
             Visitor.magician.updateAction(this, k, k.id, fileWriter);
-            Visitor.magician.updateAngelKilled(k, k.id);
+            Visitor.magician.updateAngelKilled(k, k.id, fileWriter);
         }
 
     }
@@ -30,7 +30,7 @@ public class TheDoomerVisitor extends Visitor {
         if(p.getHp() > 0){
             p.setHp(0);
             Visitor.magician.updateAction(this, p, p.id, fileWriter);
-            Visitor.magician.updateAngelKilled(p, p.id);
+            Visitor.magician.updateAngelKilled(p, p.id, fileWriter);
         }
 
     }
@@ -40,7 +40,7 @@ public class TheDoomerVisitor extends Visitor {
         if(w.getHp() > 0){
             w.setHp(0);
             Visitor.magician.updateAction(this, w, w.id, fileWriter);
-            Visitor.magician.updateAngelKilled(w, w.id);
+            Visitor.magician.updateAngelKilled(w, w.id, fileWriter);
         }
 
     }
@@ -50,7 +50,7 @@ public class TheDoomerVisitor extends Visitor {
         if(r.getHp() > 0){
             r.setHp(0);
             Visitor.magician.updateAction(this, r, r.id, fileWriter);
-            Visitor.magician.updateAngelKilled(r, r.id);
+            Visitor.magician.updateAngelKilled(r, r.id, fileWriter);
         }
 
     }

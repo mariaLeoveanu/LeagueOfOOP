@@ -23,8 +23,8 @@ public abstract class Visitor {
     public abstract void apply(Wizard w, FileWriter fileWriter) throws IOException;
     public abstract void apply(Rogue r, FileWriter fileWriter) throws IOException;
 
-    public void spawn(){
-        Visitor.magician.updateSpawn(this);
+    public void spawn(FileWriter fileWriter) throws IOException {
+        Visitor.magician.updateSpawn(this, fileWriter);
     }
 
     public ArrayList<Integer> checkForHeroes(ArrayList<Hero> heroes){

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 class PrintGameData {
 
     void printData(final ArrayList<Hero> heroes, final FileWriter printData) throws IOException {
+        printData.writeWord("~~ Results ~~");
+        printData.writeNewLine();
         for (Hero hero : heroes) {
             if (hero.getHp() == 0) {
                 printData.writeCharacter(hero.getName());

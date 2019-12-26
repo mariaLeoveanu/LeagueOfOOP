@@ -100,17 +100,17 @@ public abstract class Hero {
         return -1;
     }
 
-    public final void checkIfOpponentKilled(final Hero hero) throws IOException {
+    public final void checkIfOpponentKilled(final Hero hero, FileWriter fileWriter) throws IOException {
         Magician magician = new Magician();
         if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
             this.setXp(this.getXp() + Math.max(0,
                     Constants.XP_FORMULA_MINUEND
                     - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
-            magician.updateHeroKilled(this, hero, this.id, hero.id);
+            magician.updateHeroKilled(this, hero, this.id, hero.id, fileWriter);
         }
     }
 
-    public final void tryLevelUp() {
+    public final void tryLevelUp(FileWriter fileWriter) throws IOException {
         if (this.getHp() <= 0) {
             return;
         }
@@ -123,7 +123,7 @@ public abstract class Hero {
             if (this.getLevel() != previousLevel) {
                 this.setMaxHP(this.getMaxHP() + (this.getLevel() - previousLevel) * this.getHealthPerLevel());
                 this.setHp(this.getMaxHP());
-                Visitor.magician.updateLevelUp(this);
+                Visitor.magician.updateLevelUp(this,fileWriter);
             }
         }
     }

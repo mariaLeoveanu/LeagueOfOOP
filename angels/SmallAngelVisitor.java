@@ -17,7 +17,7 @@ public class SmallAngelVisitor extends Visitor {
 
     @Override
     public void apply(Knight k, FileWriter fileWriter) throws IOException {
-        if (k.getMaxHP() > 0){
+        if (k.getHp() > 0){
             k.raceModifierChange += 0.1f;
             k.setHp(Math.min(k.getMaxHP(), k.getHp() + 10));
             Visitor.magician.updateAction(this, k, k.id, fileWriter);
@@ -27,7 +27,7 @@ public class SmallAngelVisitor extends Visitor {
 
     @Override
     public void apply(Pyromancer p, FileWriter fileWriter) throws IOException {
-        if (p.getMaxHP() > 0){
+        if (p.getHp() > 0){
             p.raceModifierChange += 0.15f;
             p.setHp(Math.min(p.getMaxHP(), p.getHp() + 15));
             Visitor.magician.updateAction(this, p, p.id, fileWriter);
@@ -36,7 +36,7 @@ public class SmallAngelVisitor extends Visitor {
 
     @Override
     public void apply(Wizard w, FileWriter fileWriter) throws IOException {
-        if (w.getMaxHP() > 0){
+        if (w.getHp() > 0){
             w.raceModifierChange +=0.1f;
             w.setHp(Math.min(w.getMaxHP(), w.getHp() + 25));
             Visitor.magician.updateAction(this, w, w.id, fileWriter);
@@ -45,7 +45,7 @@ public class SmallAngelVisitor extends Visitor {
 
     @Override
     public void apply(Rogue r, FileWriter fileWriter) throws IOException {
-        if (r.getMaxHP() > 0){
+        if (r.getHp() > 0){
             r.raceModifierChange += 0.05f;
             r.setHp(Math.min(r.getMaxHP(), r.getHp() + 20));
             Visitor.magician.updateAction(this, r, r.id, fileWriter);

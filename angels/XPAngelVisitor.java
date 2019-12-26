@@ -20,7 +20,7 @@ public class XPAngelVisitor extends Visitor{
         if(k.getHp() > 0){
             k.setXp(k.getXp() + 45);
             Visitor.magician.updateAction(this, k, k.id, fileWriter);
-            k.tryLevelUp();
+            k.tryLevelUp(fileWriter);
         }
 
     }
@@ -30,7 +30,7 @@ public class XPAngelVisitor extends Visitor{
         if(p.getHp() > 0){
             p.setXp(p.getXp() + 50);
             Visitor.magician.updateAction(this, p, p.id, fileWriter);
-            p.tryLevelUp();
+            p.tryLevelUp(fileWriter);
         }
 
     }
@@ -40,7 +40,7 @@ public class XPAngelVisitor extends Visitor{
         if(w.getHp() > 0){
             w.setXp(w.getXp() + 60);
             Visitor.magician.updateAction(this, w, w.id, fileWriter);
-            w.tryLevelUp();
+            w.tryLevelUp(fileWriter);
         }
 
     }
@@ -50,7 +50,7 @@ public class XPAngelVisitor extends Visitor{
         if(r.getHp() > 0){
             r.setXp(r.getXp() + 40);
             Visitor.magician.updateAction(this, r, r.id, fileWriter);
-            r.tryLevelUp();
+            r.tryLevelUp(fileWriter);
         }
 
     }
