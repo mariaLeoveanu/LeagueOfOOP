@@ -23,9 +23,6 @@ final class GameProcess {
         ArrayList<WizardOpponentPair> wizards = new ArrayList<>();
 
         for (int i = 0; i < readGameData.getRounds(); i++) {
-            for (int j = 0; j < heroes.size(); j++){
-                heroes.get(j).initialXP = heroes.get(j).getXp();
-            }
 
             //all players check if they have any overtime damage
             printData.writeWord("~~ Round " + (i + 1) + " ~~");
@@ -38,24 +35,43 @@ final class GameProcess {
             for (int j = 0; j < readGameData.getPlayers(); j++) {
                 heroes.get(j).move(readGameData.getMovesMat()[i][j]);
             }
-            int opponent;
             for (int j = 0; j < readGameData.getPlayers(); j++) {
-                opponent = heroes.get(j).checkForOpponents(heroes, j);
-                if (opponent >= 0) {
+                heroes.get(j).opponent = heroes.get(j).checkForOpponents(heroes, j);
+                if ( heroes.get(j).opponent >= 0) {
                     if (!heroes.get(j).getClass().equals(Wizard.class)) {
-                        heroes.get(j).attack(heroes.get(opponent),
+                        heroes.get(j).attack(heroes.get( heroes.get(j).opponent),
                                 readGameData.getMap().getLandMap());
-                        heroes.get(j).checkIfOpponentKilled(heroes.get(opponent), printData);
+                        //heroes.get(j).checkIfOpponentKilled(heroes.get(opponent), printData);
                     } else {
-                        wizards.add(new WizardOpponentPair(heroes.get(j), heroes.get(opponent)));
+                        wizards.add(new WizardOpponentPair(heroes.get(j), heroes.get( heroes.get(j).opponent)));
                     }
                 }
             }
             for (WizardOpponentPair wizard : wizards) {
                 wizard.getWizard().attack(wizard.getOpponent(),
                         readGameData.getMap().getLandMap());
-                wizard.getWizard().checkIfOpponentKilled(wizard.getOpponent(), printData);
+                //wizard.getWizard().checkIfOpponentKilled(wizard.getOpponent(), printData);
             }
+
+            for(int j = 0; j < heroes.size(); j++){
+                if(heroes.get(j).opponent >= 0) {
+                    heroes.get(j).checkIfOpponentKilled(heroes.get(heroes.get(j).opponent), printData);
+                }
+            }
+            for (Hero hero : heroes){
+                Magician magician = new Magician();
+                if(hero.heroKilledThisRound != null){
+                    magician.updateHeroKilled(hero, hero.heroKilledThisRound, hero.id, hero.heroKilledThisRound.id, printData);
+                    if(hero.heroKilledThisRound.heroKilledThisRound != null && hero.heroKilledThisRound.heroKilledThisRound.equals(hero)){
+                        magician.updateHeroKilled(hero.heroKilledThisRound, hero, hero.heroKilledThisRound.id, hero.id, printData);
+                        hero.heroKilledThisRound.heroKilledThisRound = null;
+                        hero.heroKilledThisRound = null;
+                    } else {
+                        hero.heroKilledThisRound = null;
+                    }
+                }
+            }
+
 
             //reset all attackedThisRound flags at the end of the round
 
@@ -66,6 +82,7 @@ final class GameProcess {
 
 
             wizards.clear();
+
 
 
             // angels spawn

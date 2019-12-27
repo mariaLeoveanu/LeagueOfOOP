@@ -31,6 +31,8 @@ public abstract class Hero {
     Strategy chosenStrategy;
     public int id;
     public int initialXP;
+    public int opponent;
+    public Hero heroKilledThisRound;
 
     Hero(final int x, final int y, int id) {
         setX(x);
@@ -104,11 +106,15 @@ public abstract class Hero {
     public final void checkIfOpponentKilled(final Hero hero, FileWriter fileWriter) throws IOException {
         Magician magician = new Magician();
         if (hero.getHp() <= 0 && hero.isWasAttackedThisRound()) {
+            this.heroKilledThisRound = hero;
+            if(this.hp <= 0){
+                return;
+            }
             this.setXp(this.getXp() + Math.max(0,
                     Constants.XP_FORMULA_MINUEND
                             - (this.getLevel() - hero.getLevel()) * Constants.XP_FORMULA_MULTIPLIER));
-            magician.updateHeroKilled(this, hero, this.id, hero.id, fileWriter);
-        }
+
+        }else this.heroKilledThisRound = null;
     }
 
     public final void tryLevelUp(FileWriter fileWriter) throws IOException {
